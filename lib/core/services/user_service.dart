@@ -8,8 +8,9 @@ class UserService extends GetxService {
 
   RxBool isLoading = true.obs;
 
-  Future<void> initSharedPref() async {
+  Future<UserService> initSharedPref() async {
     _sharedPreferences = await SharedPreferences.getInstance();
+    return this;
   }
 
   Future<SharedUserModel> getSharedUserModel() async {
@@ -23,7 +24,7 @@ class UserService extends GetxService {
   }
 
   String getPrefString(String key) {
-    return _sharedPreferences.getString(key) ?? '';
+    return _sharedPreferences.getString(key) ?? 'kevin';
   }
 
   int getPrefInt(String key) {

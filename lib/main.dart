@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/models/shared_user_model.dart';
 import 'package:pos_app/core/services/user_service.dart';
@@ -15,7 +16,7 @@ void main() async {
   print(sharedUserData.toString());
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft,
   ]);
   runApp(MainApp(
     sharedUserData: sharedUserData,
@@ -37,9 +38,16 @@ class MainApp extends StatelessWidget {
     if (isLoading == false) {
       FlutterNativeSplash.remove();
     }
-    return GetMaterialApp(
-      initialRoute: sharedUserData.is_login ? Routes.HOME : Routes.LOGIN,
-      getPages: AppPages.routes,
-    );
+
+    return ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, context) {
+          return GetMaterialApp(
+            initialRoute: sharedUserData.is_login ? Routes.HOME : Routes.LOGIN,
+            getPages: AppPages.routes,
+          );
+        });
   }
 }

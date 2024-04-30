@@ -21,13 +21,25 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  # flutter_lints: ^3.0.0
   json_serializable: ^6.8.0
   freezed: ^2.5.2
   build_runner: ^2.4.9
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/img/
+  fonts:
+    - family: popmed
+      fonts:
+        - asset: assets/fonts/Poppins-Medium.ttf
+    - family: popreg
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+    - family: popsem
+      fonts:
+        - asset: assets/fonts/Poppins-SemiBold.ttf
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

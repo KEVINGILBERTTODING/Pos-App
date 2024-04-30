@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/bindings/auth_binding.dart';
 import 'package:pos_app/modules/auth/views/login_view.dart';
-import 'package:pos_app/modules/home/bindings/home_binding.dart';
-import 'package:pos_app/modules/home/views/home_screen.dart';
+import 'package:pos_app/modules/home/employee/bindings/home_binding.dart';
+import 'package:pos_app/modules/home/employee/views/home_screen.dart';
 
 part 'app_routes.dart';
 
