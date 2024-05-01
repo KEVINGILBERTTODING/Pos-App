@@ -13,6 +13,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   shared_preferences: ^2.2.3
   flutter_screenutil: ^5.9.0
+  json_annotation: ^4.9.0
   http: ^1.2.1
   cupertino_icons: ^1.0.8
   flutter_native_splash: ^2.4.0
