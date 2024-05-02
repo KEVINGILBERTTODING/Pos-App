@@ -45,7 +45,9 @@ class MainApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (_, context) {
           return GetMaterialApp(
-            initialRoute: sharedUserData.is_login ? Routes.HOME : Routes.LOGIN,
+            initialRoute: sharedUserData.is_login
+                ? Routes.DASBOARD_EMPLOYEE
+                : Routes.LOGIN,
             getPages: AppPages.routes,
           );
         });

@@ -22,6 +22,7 @@ ClientModel _$ClientModelFromJson(Map<String, dynamic> json) {
 mixin _$ClientModel {
   int get user_id => throw _privateConstructorUsedError;
   int get role => throw _privateConstructorUsedError;
+  String? get foto => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $ClientModelCopyWith<$Res> {
           ClientModel value, $Res Function(ClientModel) then) =
       _$ClientModelCopyWithImpl<$Res, ClientModel>;
   @useResult
-  $Res call({int user_id, int role, String name});
+  $Res call({int user_id, int role, String? foto, String name});
 }
 
 /// @nodoc
@@ -54,6 +55,7 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
   $Res call({
     Object? user_id = null,
     Object? role = null,
+    Object? foto = freezed,
     Object? name = null,
   }) {
     return _then(_value.copyWith(
@@ -65,6 +67,10 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as int,
+      foto: freezed == foto
+          ? _value.foto
+          : foto // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$ClientModelImplCopyWith<$Res>
       __$$ClientModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int user_id, int role, String name});
+  $Res call({int user_id, int role, String? foto, String name});
 }
 
 /// @nodoc
@@ -97,6 +103,7 @@ class __$$ClientModelImplCopyWithImpl<$Res>
   $Res call({
     Object? user_id = null,
     Object? role = null,
+    Object? foto = freezed,
     Object? name = null,
   }) {
     return _then(_$ClientModelImpl(
@@ -108,6 +115,10 @@ class __$$ClientModelImplCopyWithImpl<$Res>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as int,
+      foto: freezed == foto
+          ? _value.foto
+          : foto // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -120,7 +131,7 @@ class __$$ClientModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClientModelImpl implements _ClientModel {
   const _$ClientModelImpl(
-      {this.user_id = 0, this.role = 0, this.name = "Guest"});
+      {this.user_id = 0, this.role = 0, this.foto, this.name = "Guest"});
 
   factory _$ClientModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClientModelImplFromJson(json);
@@ -132,12 +143,14 @@ class _$ClientModelImpl implements _ClientModel {
   @JsonKey()
   final int role;
   @override
+  final String? foto;
+  @override
   @JsonKey()
   final String name;
 
   @override
   String toString() {
-    return 'ClientModel(user_id: $user_id, role: $role, name: $name)';
+    return 'ClientModel(user_id: $user_id, role: $role, foto: $foto, name: $name)';
   }
 
   @override
@@ -147,12 +160,13 @@ class _$ClientModelImpl implements _ClientModel {
             other is _$ClientModelImpl &&
             (identical(other.user_id, user_id) || other.user_id == user_id) &&
             (identical(other.role, role) || other.role == role) &&
+            (identical(other.foto, foto) || other.foto == foto) &&
             (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user_id, role, name);
+  int get hashCode => Object.hash(runtimeType, user_id, role, foto, name);
 
   @JsonKey(ignore: true)
   @override
@@ -172,6 +186,7 @@ abstract class _ClientModel implements ClientModel {
   const factory _ClientModel(
       {final int user_id,
       final int role,
+      final String? foto,
       final String name}) = _$ClientModelImpl;
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
@@ -181,6 +196,8 @@ abstract class _ClientModel implements ClientModel {
   int get user_id;
   @override
   int get role;
+  @override
+  String? get foto;
   @override
   String get name;
   @override

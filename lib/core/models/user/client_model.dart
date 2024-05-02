@@ -8,6 +8,7 @@ class ClientModel with _$ClientModel {
   const factory ClientModel(
       {@Default(0) int user_id,
       @Default(0) int role,
+      String? foto,
       @Default("Guest") String name}) = _ClientModel;
 
   factory ClientModel.fromJson(Map<String, dynamic> json) =>

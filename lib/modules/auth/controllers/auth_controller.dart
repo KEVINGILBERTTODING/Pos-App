@@ -43,7 +43,7 @@ class AuthController extends GetxController {
       await userService.saveUserInfo(responseApiModel.data);
       isLoading.value = false;
       Get.snackbar("Berhasil", responseApiModel.message.toString());
-      Get.offAllNamed(Routes.HOME);
+      Get.offAllNamed(Routes.DASBOARD_EMPLOYEE);
       return;
     } else {
       isLoading.value = false;

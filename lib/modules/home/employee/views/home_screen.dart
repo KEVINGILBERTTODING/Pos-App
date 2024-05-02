@@ -5,13 +5,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/util/constans.dart';
 import 'package:pos_app/modules/home/employee/controllers/home_controller.dart';
+import 'package:pos_app/modules/dashboard/employee/views/dashboard_employee.dart';
+import 'package:pos_app/routes/app_pages.dart';
 import 'package:pos_app/styles/styles.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(HomeController());
+
     return Scaffold(
       body: SafeArea(
         child: Obx(
@@ -19,94 +23,6 @@ class HomeScreen extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: EdgeInsets.only(top: 10.h),
-                width: 30.w,
-                child: ListView(children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          color: StylesApp.primaryColor,
-                          width: 100.w,
-                          height: 50.h,
-                          child: Icon(Icons.home_filled),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          color: Colors.grey[200],
-                          width: 100.w,
-                          height: 50.h,
-                          child: Icon(
-                            Icons.email,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          color: Colors.grey[200],
-                          width: 100.w,
-                          height: 50.h,
-                          child: Icon(
-                            Icons.pie_chart,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          color: Colors.grey[200],
-                          width: 100.w,
-                          height: 50.h,
-                          child: Icon(
-                            Icons.settings,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          color: Colors.grey[200],
-                          width: 100.w,
-                          height: 50.h,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ]),
-              ),
-              SizedBox(
-                width: ScreenUtil().setWidth(10),
-              ),
               Expanded(
                 child: ListView(children: [
                   Column(
