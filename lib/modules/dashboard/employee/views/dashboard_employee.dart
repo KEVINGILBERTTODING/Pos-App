@@ -40,24 +40,28 @@ class DashboardEmployeeScreen extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    CircleAvatar(
-                      radius: 20,
-                      child: Image.asset('assets/img/main_logo.jpeg'),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    // CircleAvatar(
+                    //   radius: 20,
+                    //   child: Image.asset('assets/img/main_logo.jpeg'),
+                    // ),
+                    // SizedBox(
+                    //   height: 8,
+                    // ),
                   ],
                 ),
                 unselectedLabelTextStyle: const TextStyle(),
                 // navigation rail items
                 destinations: const [
                   NavigationRailDestination(
-                      icon: Icon(Icons.home), label: Text('Home')),
+                      icon: Icon(Icons.apps), label: Text('Home')),
                   NavigationRailDestination(
                       indicatorColor: StylesApp.primaryColor,
-                      icon: Icon(Icons.person),
+                      icon: Icon(Icons.person_outline),
                       label: Text('Profil')),
+                  NavigationRailDestination(
+                      indicatorColor: StylesApp.primaryColor,
+                      icon: Icon(Icons.logout_outlined),
+                      label: Text('Keluar')),
                 ],
               ),
 

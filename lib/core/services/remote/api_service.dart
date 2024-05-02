@@ -59,4 +59,33 @@ class ApiService extends GetxService {
           data: null);
     }
   }
+
+  Future<ResponseApiModel> updateProfile(
+      Map<String, dynamic> map, int userId) async {
+    try {
+      final responseApi = await http.post(
+          Uri.parse(EndPoint.update_profile_endpoint + userId.toString()),
+          body: map);
+      final responseJson = await jsonDecode(responseApi.body);
+
+      if (responseApi.statusCode == 200) {
+        final responApiModel = await ResponseApiModel(
+            responsestate: Constants.SUCCESS_STATE,
+            message: responseJson['message'],
+            data: null);
+        return responApiModel;
+      }
+
+      return ResponseApiModel(
+          responsestate: Constants.ERROR_STATE,
+          message: responseJson['message'],
+          data: null);
+    } catch (e) {
+      print(e.toString());
+      return ResponseApiModel(
+          responsestate: Constants.SERVER_ERR_STATE,
+          message: 'Tidak ada koneksi internet',
+          data: null);
+    }
+  }
 }

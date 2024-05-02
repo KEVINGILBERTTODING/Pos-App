@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/core/services/remote/end_point.dart';
 import 'package:pos_app/modules/profile/employee/bindings/employee_profile_binding.dart';
 import 'package:pos_app/modules/profile/employee/controllers/employee_profile_controller.dart';
 import 'package:pos_app/styles/styles.dart';
@@ -24,11 +25,14 @@ class EmployeeProfileScreen extends StatelessWidget {
               ),
             )
           : Padding(
-              padding: EdgeInsets.all(10.w),
+              padding: EdgeInsets.only(top: 20.w, right: 10.w, left: 10.w),
               child: Expanded(
                   child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
                         contentPadding: EdgeInsets.zero,
@@ -40,6 +44,24 @@ class EmployeeProfileScreen extends StatelessWidget {
                           "Halaman untuk mengubah akun.",
                           style: TextStyle(fontFamily: 'popreg', fontSize: 10),
                         ),
+                        trailing: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: ClipOval(
+                              child: Image.network(
+                                EndPoint.base_url +
+                                    controller.clientModel.value.foto
+                                        .toString(),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
                       ),
                       TextFormField(
                         controller: controller.nameController,
@@ -125,23 +147,30 @@ class EmployeeProfileScreen extends StatelessWidget {
                         children: [
                           Align(
                             alignment: Alignment.topRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Simpan data',
-                                style: TextStyle(
-                                    fontFamily: 'popsem',
-                                    color: Colors.black,
-                                    fontSize: 6.sp),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
-                                    StylesApp.primaryColor),
-                              ),
-                            ),
-                          )
+                            child: controller.isLoadingUpdateData.value
+                                ? CircularProgressIndicator()
+                                : TextButton(
+                                    onPressed: () async {
+                                      await controller.inputValidation();
+                                    },
+                                    child: Text(
+                                      'Simpan data',
+                                      style: TextStyle(
+                                          fontFamily: 'popsem',
+                                          color: Colors.black,
+                                          fontSize: 6.sp),
+                                    ),
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          StylesApp.primaryColor),
+                                    ),
+                                  ),
+                          ),
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                     ],
                   ),
                 ],

@@ -6,6 +6,7 @@ abstract class EmployeeOnRailMenu {
   static const List<Widget> menuContent = [
     // Content for Home tab
     HomeScreen(),
-    EmployeeProfileScreen()
+    EmployeeProfileScreen(),
+    EmployeeProfileScreen(),
   ];
 }
