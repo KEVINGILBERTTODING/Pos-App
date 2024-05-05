@@ -84,7 +84,7 @@ class EmployeeProfileController extends GetxController {
         map['new_password'] = newPw.text;
       }
 
-      // updat profile
+      // update profile
       final responseApi = await apiService.updateProfile(map, userId);
       isLoadingUpdateData.value = false;
 
@@ -95,7 +95,7 @@ class EmployeeProfileController extends GetxController {
         Get.snackbar("Berhasil", responseApi.message.toString());
         return;
       } else {
-        Get.snackbar("Berhasil", responseApi.message.toString());
+        Get.snackbar("Error", responseApi.message.toString());
         return;
       }
     }

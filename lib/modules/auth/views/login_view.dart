@@ -49,12 +49,24 @@ class LoginScreen extends GetView<AuthController> {
                         keyboardType: TextInputType.emailAddress,
                         style: TextStyle(fontFamily: 'popmed', fontSize: 7.sp),
                         decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.email_outlined),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            hintText: "Masukkan email anda"),
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: "Email",
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'popmed',
+                            fontSize: 6.sp,
+                          ),
+                          hintText: "Masukkan email anda",
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: StylesApp.primaryColor, width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: ScreenUtil().setHeight(10),
@@ -65,6 +77,16 @@ class LoginScreen extends GetView<AuthController> {
                         keyboardType: TextInputType.visiblePassword,
                         style: TextStyle(fontFamily: 'popmed', fontSize: 7.sp),
                         decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'popmed',
+                            fontSize: 6.sp,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: StylesApp.primaryColor, width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           prefixIcon: const Icon(Icons.key_sharp),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           border: OutlineInputBorder(
