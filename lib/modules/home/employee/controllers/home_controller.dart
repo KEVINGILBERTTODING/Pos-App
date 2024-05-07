@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:pos_app/core/models/category/kategori_model.dart';
 import 'package:pos_app/core/models/member/member_model.dart';
 import 'package:pos_app/core/models/penjualan_detail/penjualan_detail_model.dart';
@@ -29,6 +30,9 @@ class HomeController extends GetxController {
   RxInt memberId = 0.obs;
   RxList<MemberModel> memberList = <MemberModel>[].obs;
   RxInt totalTransaction = 0.obs;
+  RxBool isLoadingTransaction = false.obs;
+  final userService = Get.put(UserService());
+  int totalDiterima = 0;
 
   Future<void> initCategory() async {
     try {
@@ -185,6 +189,7 @@ class HomeController extends GetxController {
     controllerDiskon.text = '0';
     controllerKembalian.text = '0';
     controllerDiterima.text = '0';
+    memberId.value = 0;
 
     try {
       await getMember();
@@ -216,9 +221,73 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> countExchange() async {
-    print(controllerDiterima.value);
+  Future<void> countExchange(String value) async {
+    totalDiterima = cleanCurrencyFormat(value);
+    int kembalian = totalDiterima - totalTransaction.value;
+    controllerKembalian.text = formatRupiah(kembalian);
   }
+
+  void countDiscount() {
+    if (memberId.value == 0) {
+      int discount = appService.appModel.value.diskon;
+      totalTransaction.value =
+          countTotalWithDiscount(totalTransaction.value, discount);
+      return;
+    }
+  }
+
+  Future<void> transactionValidation() async {
+    try {
+      await userService.initSharedPref();
+      int userId = await userService.getPrefInt(Constants.USER_ID);
+      int id_member = memberId.value;
+      int totalItem = countTotalItem();
+      int totalHarga = totalTransaction.value;
+      int diskon = int.parse(controllerDiskon.text);
+
+      if (userId == 0) {
+        Get.snackbar('Error', 'Anda tidak memilki akses');
+        print('user id not found');
+
+        return;
+      }
+
+      if (totalItem == 0) {
+        Get.snackbar('Error', 'Total produk tidak valid');
+
+        return;
+      }
+
+      if (totalHarga == 0) {
+        Get.snackbar('Error', 'Total produk tidak valid');
+
+        return;
+      }
+      print('user id found');
+      return;
+    } catch (e) {
+      isLoadingTransaction.value = false;
+      Get.snackbar('Error', 'Gagal membuat transaksi');
+      return;
+    }
+  }
+
+  int countTotalItem() {
+    int totalitem = 0;
+    for (var element in penjualanDetailModelList) {
+      totalitem += element.jumlah;
+    }
+    return totalitem;
+  }
+
+  int countTotalWithDiscount(int hargaAwal, int diskonPersen) {
+    // Menghitung harga setelah diskon
+    int hargaSetelahDiskon =
+        (hargaAwal - (diskonPersen / 100 * hargaAwal)).round();
+    return hargaSetelahDiskon;
+  }
+
+  Future<void> store(Map<String, dynamic> map) async {}
 
   int cleanCurrencyFormat(String currency) {
     // Menghapus 'Rp. ' dan semua titik
@@ -227,5 +296,21 @@ class HomeController extends GetxController {
     String cleanNumber = noRp.split(',')[0];
 
     return int.parse(cleanNumber);
+  }
+
+  String formatRupiah(int number) {
+    String currency = 'Rp. ';
+    String formattedNumber = number.toString();
+    String result = '';
+
+    while (formattedNumber.length > 3) {
+      result =
+          '.' + formattedNumber.substring(formattedNumber.length - 3) + result;
+      formattedNumber =
+          formattedNumber.substring(0, formattedNumber.length - 3);
+    }
+    result = formattedNumber + result;
+
+    return currency + result;
   }
 }

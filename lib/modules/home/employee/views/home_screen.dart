@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pos_app/core/models/product/product_model.dart';
 import 'package:pos_app/core/util/constans.dart';
 import 'package:pos_app/modules/home/employee/bindings/home_binding.dart';
 import 'package:pos_app/modules/home/employee/controllers/home_controller.dart';
@@ -120,88 +121,11 @@ class HomeScreen extends StatelessWidget {
                                     var productItem = controller
                                         .productModelList.value[index];
                                     return GestureDetector(
-                                        onTap: () {
-                                          controller.addProduct(productItem);
-                                        },
-                                        child: Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(15),
-                                              ),
-                                              child: Container(
-                                                  padding: EdgeInsets.all(5.w),
-                                                  color: Colors.grey[200],
-                                                  width: 100.w,
-                                                  height: 200.h,
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/food_example.png',
-                                                        width: 80.w,
-                                                        height: 80.h,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10.h,
-                                                      ),
-                                                      Text(
-                                                        truncateString(
-                                                            productItem
-                                                                .nama_produk
-                                                                .toString()),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'popmed',
-                                                            fontSize: 6.sp),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.h,
-                                                      ),
-                                                      Text(
-                                                        formatRupiah(productItem
-                                                            .harga_jual),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'popreg',
-                                                            fontSize: 6.sp),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5.h,
-                                                      ),
-                                                      productItem.stok == 0
-                                                          ? Text(
-                                                              'Habis',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'popreg',
-                                                                  fontSize:
-                                                                      6.sp,
-                                                                  color: Colors
-                                                                      .red),
-                                                            )
-                                                          : Text(
-                                                              'x${productItem.stok.toString()}',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'popreg',
-                                                                  fontSize:
-                                                                      6.sp),
-                                                            ),
-                                                    ],
-                                                  )),
-                                            ),
-                                          ],
-                                        ));
+                                      onTap: () {
+                                        controller.addProduct(productItem);
+                                      },
+                                      child: product_item(productItem),
+                                    );
                                   },
                                 ),
                     ],
@@ -354,12 +278,12 @@ class HomeScreen extends StatelessWidget {
                                     style: TextStyle(
                                         fontFamily: 'popmed',
                                         color: Colors.white,
-                                        fontSize: 5.sp),
+                                        fontSize: 6.sp),
                                   ),
                                 ),
                                 controller.isLoadingMember.value
                                     ? CircularProgressIndicator(
-                                        color: StylesApp.primaryColor,
+                                        color: Colors.blue,
                                       )
                                     : ElevatedButton(
                                         style: ButtonStyle(
@@ -367,7 +291,7 @@ class HomeScreen extends StatelessWidget {
                                                 MaterialStateProperty.all(0),
                                             backgroundColor:
                                                 MaterialStatePropertyAll(
-                                                    StylesApp.primaryColor)),
+                                                    Colors.blue)),
                                         onPressed: () async {
                                           final bool isValid = await controller
                                               .countTransaction();
@@ -382,8 +306,8 @@ class HomeScreen extends StatelessWidget {
                                           'Proses',
                                           style: TextStyle(
                                               fontFamily: 'popmed',
-                                              color: Colors.black,
-                                              fontSize: 5.sp),
+                                              color: Colors.white,
+                                              fontSize: 6.sp),
                                         ),
                                       ),
                               ],
@@ -394,6 +318,63 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  ClipRRect product_item(ProductModel productItem) {
+    return ClipRRect(
+      borderRadius: BorderRadius.all(
+        Radius.circular(15),
+      ),
+      child: IntrinsicHeight(
+        child: Container(
+            padding: EdgeInsets.all(5.w),
+            color: Colors.grey[200],
+            width: 100.w,
+            height: 200.h,
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/img/food_example.png',
+                  width: 80.w,
+                  height: 80.h,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  truncateString(productItem.nama_produk.toString()),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontFamily: 'popmed', fontSize: 6.sp),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text(
+                  formatRupiah(productItem.harga_jual),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                productItem.stok == 0
+                    ? Text(
+                        'Habis',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'popreg',
+                            fontSize: 6.sp,
+                            color: Colors.red),
+                      )
+                    : Text(
+                        'x${productItem.stok.toString()}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
+                      ),
+              ],
+            )),
       ),
     );
   }
@@ -412,44 +393,72 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Total Pembayaran',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'popmed',
-                            fontSize: 5.sp),
-                      ),
-
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Text(
-                        formatRupiah(controller.totalTransaction.value),
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'popsem',
-                            fontSize: 10.sp),
-                      ),
-                      // SizedBox(
-                      //   height: 100.h,
-                      //   child: ListView.builder(
-                      //     physics: NeverScrollableScrollPhysics(),
-                      //     shrinkWrap: true,
-                      //     itemCount: penjualanDetailModel.length,
-                      //     itemBuilder: (context, index) {
-                      //       var orderList = penjualanDetailModel[index];
-                      //       return ListTile(
-                      //         leading: Icon(Icons.add_box),
-                      //         title: Text('dsdsd'),
-                      //       );
-                      //     },
-                      //   ),
-                      // )
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Total Pembayaran',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'popmed',
+                              fontSize: 5.sp),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Obx(
+                          () => Text(
+                            formatRupiah(controller.totalTransaction.value),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'popsem',
+                                fontSize: 10.sp),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(
+                          'Detail Pesanan',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'popmed',
+                              fontSize: 5.sp),
+                        ),
+                        ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controller.penjualanDetailModelList.length,
+                          itemBuilder: (context, index) {
+                            var orderList = controller
+                                .penjualanDetailModelList.value[index];
+                            return ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: Icon(
+                                Icons.shopping_bag_outlined,
+                                color: Colors.blue,
+                              ),
+                              title: Text(
+                                orderList.productName.toString(),
+                                style: TextStyle(
+                                    fontFamily: 'popmed',
+                                    fontSize: 6.sp,
+                                    color: Colors.black),
+                              ),
+                              subtitle: Text(
+                                'X ${orderList.jumlah}',
+                                style: TextStyle(
+                                    fontFamily: 'popmed',
+                                    fontSize: 6.sp,
+                                    color: Colors.black),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -534,6 +543,8 @@ class HomeScreen extends StatelessWidget {
                               controller.controllerDiskon.text = controller
                                   .appService.appModel.value.diskon
                                   .toString();
+                              controller.countDiscount();
+                              controller.memberId.value = int.parse(value!);
                             }),
                         SizedBox(
                           height: 10.h,
@@ -564,6 +575,7 @@ class HomeScreen extends StatelessWidget {
                           height: 10.h,
                         ),
                         TextField(
+                          controller: controller.controllerDiterima,
                           inputFormatters: [
                             CurrencyTextInputFormatter.currency(
                               locale: 'ID',
@@ -573,7 +585,8 @@ class HomeScreen extends StatelessWidget {
                           ],
                           onChanged: (value) {
                             Future.delayed(Duration(seconds: 1), () async {
-                              await controller.countExchange();
+                              await controller.countExchange(value);
+                              // print(value);
                             });
                           },
                           keyboardType: TextInputType.number,
@@ -599,6 +612,7 @@ class HomeScreen extends StatelessWidget {
                           height: 10.h,
                         ),
                         TextField(
+                          controller: controller.controllerKembalian,
                           readOnly: true,
                           inputFormatters: [
                             CurrencyTextInputFormatter.currency()
@@ -620,6 +634,41 @@ class HomeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: controller.isLoadingTransaction.value
+                                  ? CircularProgressIndicator(
+                                      color: StylesApp.primaryColor,
+                                    )
+                                  : TextButton(
+                                      onPressed: () async {
+                                        await controller
+                                            .transactionValidation();
+                                      },
+                                      child: Text(
+                                        'Simpan Transaksi',
+                                        style: TextStyle(
+                                            fontFamily: 'popsem',
+                                            fontSize: 6.sp,
+                                            color: Colors.white),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                Colors.blue),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
                         ),
                       ],
                     ),

@@ -1,6 +1,6 @@
 class EndPoint {
-  static final ip_address = '192.168.43.215';
-  // static final ip_address = '192.168.18.113';
+  // static final ip_address = '192.168.43.215';
+  static final ip_address = '192.168.18.113';
   // static final ip_address = '192.168.1.10'; // wifi kos
 
   static final api_service = 'http://$ip_address:8000/api/';
