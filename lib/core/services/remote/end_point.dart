@@ -1,6 +1,6 @@
 class EndPoint {
-  // static final ip_address = '192.168.43.215';
-  static final ip_address = '192.168.18.113';
+  static final ip_address = '192.168.43.215';
+  // static final ip_address = '192.168.18.113';
   // static final ip_address = '192.168.1.10'; // wifi kos
 
   static final api_service = 'http://$ip_address:8000/api/';
@@ -13,4 +13,5 @@ class EndPoint {
   static final member_endpoint = api_service + 'member';
   static final app_endpoint = api_service + 'setting';
   static final store_transaction_endpoint = api_service + 'penjualan/store';
+  static final search_product_endpoint = api_service + 'search/product';
 }

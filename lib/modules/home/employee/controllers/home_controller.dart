@@ -37,6 +37,7 @@ class HomeController extends GetxController {
   int totalDiterima = 0;
   int totalHarga = 0;
   RxInt disscount = 0.obs;
+  RxList<ProductModel> productModelList2 = <ProductModel>[].obs;
 
   Future<void> initCategory() async {
     try {
@@ -59,25 +60,65 @@ class HomeController extends GetxController {
   }
 
   Future<void> getProduct() async {
+    if (productModelList.value.isEmpty) {
+      try {
+        isLoadingProduct.value = true;
+        final getProduct = await apiService.getProduct();
+        isLoadingProduct.value = false;
+
+        if (getProduct.responsestate == Constants.SUCCESS_STATE) {
+          productModelList.addAll(getProduct.data);
+          productModelList2.addAll(getProduct.data);
+          print('berhasul get produk');
+          setupControllers();
+          return;
+        }
+        print('gagal get produk');
+
+        Get.snackbar('Error', 'Gagal memuat data kategori');
+        return;
+      } catch (e) {
+        print(e.toString());
+
+        Get.snackbar('Error', e.toString());
+        return;
+      }
+    }
+  }
+
+  Future<void> searchProduct(String query) async {
+    isLoadingProduct.value = true;
     try {
-      isLoadingProduct.value = true;
-      final getProduct = await apiService.getProduct();
+      // jika search bar kosong
+      if (query.isEmpty || query == '') {
+        productModelList.clear();
+
+        productModelList.addAll(productModelList2.toList());
+        isLoadingProduct.value = false;
+        return;
+      }
+
+      // jika search bar tidak kosong
+      final getProduct = await apiService.searchProduct(query);
       isLoadingProduct.value = false;
 
       if (getProduct.responsestate == Constants.SUCCESS_STATE) {
+        productModelList.clear();
+
         productModelList.addAll(getProduct.data);
         print('berhasul get produk');
         setupControllers();
         return;
       }
-      print('gagal get produk');
+      print('gagal search produk');
 
-      Get.snackbar('Error', 'Gagal memuat data kategori');
       return;
     } catch (e) {
+      isLoadingProduct.value = false;
+
       print(e.toString());
 
-      Get.snackbar('Error', e.toString());
+      Get.snackbar('Error', 'Gagal memuat data produk');
       return;
     }
   }
@@ -319,9 +360,11 @@ class HomeController extends GetxController {
   Future<void> storeTransaction(Map<String, dynamic> map) async {
     final responseApiModel = await apiService.storeTransaction(map);
     isLoadingTransaction.value = false;
+    final PenjualanModel penjualanModel = responseApiModel.data;
 
     if (responseApiModel.responsestate == Constants.SUCCESS_STATE) {
       await resetState();
+      print(penjualanModel.id_penjualan);
       return;
     } else {
       Get.snackbar('Gagal', responseApiModel.message.toString());

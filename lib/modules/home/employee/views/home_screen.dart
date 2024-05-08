@@ -83,8 +83,31 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
+                      TextField(
+                        onChanged: (value) {
+                          Future.delayed(Duration(seconds: 1), () async {
+                            await controller.searchProduct(value);
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Cari produk',
+                          prefixIcon: Icon(Icons.search),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: StylesApp.primaryColor, width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
                       Text(
-                        "Pilih produk",
+                        "Pilih Produk 🍵",
                         style: TextStyle(fontFamily: 'popsem', fontSize: 12),
                       ),
                       SizedBox(

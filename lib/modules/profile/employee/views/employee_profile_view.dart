@@ -18,6 +18,7 @@ class EmployeeProfileScreen extends StatelessWidget {
     EmployeeProfileBinding().dependencies;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Obx(() => controller.isLoading.value
           ? Center(
               child: CircularProgressIndicator(

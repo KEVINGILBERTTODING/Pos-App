@@ -6,6 +6,7 @@ import 'package:pos_app/core/models/api/response_api_model.dart';
 import 'package:pos_app/core/models/app/app_model.dart';
 import 'package:pos_app/core/models/category/kategori_model.dart';
 import 'package:pos_app/core/models/member/member_model.dart';
+import 'package:pos_app/core/models/penjualan/penjualan_model.dart';
 import 'package:pos_app/core/models/product/product_model.dart';
 import 'package:pos_app/core/models/user/client_model.dart';
 import 'package:pos_app/core/services/remote/end_point.dart';
@@ -220,7 +221,7 @@ class ApiService extends GetxService {
         return ResponseApiModel(
             message: 'Transaksi berhasil',
             responsestate: Constants.SUCCESS_STATE,
-            data: null);
+            data: PenjualanModel.fromJson(dataResponse['data']));
       } else {
         return ResponseApiModel(
             message: 'Transaksi gagal',
@@ -232,6 +233,41 @@ class ApiService extends GetxService {
       return ResponseApiModel(
           message: 'Server Error',
           responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
+
+  Future<ResponseApiModel> searchProduct(String keyword) async {
+    try {
+      String url = EndPoint.search_product_endpoint;
+      final Map<String, String> data = {'keyword': keyword};
+      String queryString = Uri(queryParameters: data).query;
+      String requestUrl = '$url?$queryString';
+      final responseApi = await http.get(
+        Uri.parse(requestUrl),
+      );
+      if (responseApi.statusCode == 200 && responseApi.body != null) {
+        final dataResponse = await jsonDecode(responseApi.body);
+        final responseApiModel = await ResponseApiModel(
+            responsestate: Constants.SUCCESS_STATE,
+            message: 'success',
+            data: (dataResponse['data'] as List)
+                .map((item) => ProductModel.fromJson(item))
+                .toList());
+
+        print(responseApiModel.data.toString());
+
+        return responseApiModel;
+      } else {
+        return ResponseApiModel(
+            responsestate: Constants.ERROR_STATE,
+            message: 'Gagal memuat produk',
+            data: null);
+      }
+    } catch (e) {
+      return ResponseApiModel(
+          responsestate: Constants.ERROR_STATE,
+          message: 'Server error',
           data: null);
     }
   }
