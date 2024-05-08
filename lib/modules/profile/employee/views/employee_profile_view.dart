@@ -157,12 +157,12 @@ class EmployeeProfileScreen extends StatelessWidget {
                                       'Simpan data',
                                       style: TextStyle(
                                           fontFamily: 'popsem',
-                                          color: Colors.black,
+                                          color: Colors.blue,
                                           fontSize: 6.sp),
                                     ),
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(
-                                          StylesApp.primaryColor),
+                                          Colors.blue[100]),
                                     ),
                                   ),
                           ),

@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:pos_app/core/models/category/kategori_model.dart';
 import 'package:pos_app/core/models/member/member_model.dart';
+import 'package:pos_app/core/models/penjualan/penjualan_model.dart';
 import 'package:pos_app/core/models/penjualan_detail/penjualan_detail_model.dart';
 import 'package:pos_app/core/models/product/product_model.dart';
 import 'package:pos_app/core/services/app_service.dart';
 import 'package:pos_app/core/services/remote/api_service.dart';
 import 'package:pos_app/core/services/user_service.dart';
 import 'package:pos_app/core/util/constans.dart';
+import 'package:pos_app/routes/app_pages.dart';
 
 class HomeController extends GetxController {
   RxList<dynamic> foodList = [].obs;
@@ -33,6 +35,8 @@ class HomeController extends GetxController {
   RxBool isLoadingTransaction = false.obs;
   final userService = Get.put(UserService());
   int totalDiterima = 0;
+  int totalHarga = 0;
+  RxInt disscount = 0.obs;
 
   Future<void> initCategory() async {
     try {
@@ -190,13 +194,16 @@ class HomeController extends GetxController {
     controllerKembalian.text = '0';
     controllerDiterima.text = '0';
     memberId.value = 0;
+    disscount.value = 0;
 
     try {
       await getMember();
       if (!penjualanDetailModelList.isEmpty) {
         totalTransaction.value = 0;
+        totalHarga = 0;
         for (var element in penjualanDetailModelList) {
           totalTransaction.value += element.subtotal;
+          totalHarga += element.subtotal;
         }
         print('total transaksi: ${totalTransaction.value}');
         return true;
@@ -230,6 +237,7 @@ class HomeController extends GetxController {
   void countDiscount() {
     if (memberId.value == 0) {
       int discount = appService.appModel.value.diskon;
+      disscount.value = discount;
       totalTransaction.value =
           countTotalWithDiscount(totalTransaction.value, discount);
       return;
@@ -237,37 +245,86 @@ class HomeController extends GetxController {
   }
 
   Future<void> transactionValidation() async {
-    try {
-      await userService.initSharedPref();
-      int userId = await userService.getPrefInt(Constants.USER_ID);
-      int id_member = memberId.value;
-      int totalItem = countTotalItem();
-      int totalHarga = totalTransaction.value;
-      int diskon = int.parse(controllerDiskon.text);
+    // try {
 
-      if (userId == 0) {
-        Get.snackbar('Error', 'Anda tidak memilki akses');
-        print('user id not found');
+    // } catch (e) {
+    //   isLoadingTransaction.value = false;
+    //   Get.snackbar('Error', 'Gagal membuat transaksi');
+    //   print(e.toString());
+    //   return;
+    // }
 
-        return;
-      }
+    await userService.initSharedPref();
+    int userId = await userService.getPrefInt(Constants.USER_ID);
+    int id_member = memberId.value;
+    int totalItem = countTotalItem();
 
-      if (totalItem == 0) {
-        Get.snackbar('Error', 'Total produk tidak valid');
+    int totalDiterima = cleanCurrencyFormat(controllerDiterima.text);
 
-        return;
-      }
+    if (userId == 0) {
+      Get.snackbar('Error', 'Anda tidak memilki akses');
+      print('user id not found');
 
-      if (totalHarga == 0) {
-        Get.snackbar('Error', 'Total produk tidak valid');
-
-        return;
-      }
-      print('user id found');
       return;
-    } catch (e) {
-      isLoadingTransaction.value = false;
-      Get.snackbar('Error', 'Gagal membuat transaksi');
+    }
+
+    if (totalItem == 0) {
+      Get.snackbar('Error', 'Total produk tidak valid');
+
+      return;
+    }
+
+    if (totalHarga == 0) {
+      Get.snackbar('Error', 'Total produk tidak valid');
+
+      return;
+    }
+
+    if (penjualanDetailModelList.isEmpty) {
+      Get.snackbar('Error', 'Order item tidak boleh kosong');
+
+      return;
+    }
+
+    if (totalDiterima == 0) {
+      Get.snackbar('Error', 'Total diterima tidak valid');
+
+      return;
+    }
+
+    // prepare send data transaction
+
+    final PenjualanModel penjualanModel = PenjualanModel(
+        id_member: id_member,
+        total_item: totalItem,
+        total_harga: totalHarga,
+        diskon: disscount.value,
+        bayar: totalTransaction.value,
+        diterima: totalDiterima,
+        id_user: userId);
+
+    Map<String, dynamic> dataTransaction = {
+      'penjualan': penjualanModel.toJson(),
+      'penjualan_detail':
+          penjualanDetailModelList.map((element) => element.toJson()).toList(),
+    };
+
+    isLoadingTransaction.value = true;
+
+    await storeTransaction(dataTransaction);
+
+    return;
+  }
+
+  Future<void> storeTransaction(Map<String, dynamic> map) async {
+    final responseApiModel = await apiService.storeTransaction(map);
+    isLoadingTransaction.value = false;
+
+    if (responseApiModel.responsestate == Constants.SUCCESS_STATE) {
+      await resetState();
+      return;
+    } else {
+      Get.snackbar('Gagal', responseApiModel.message.toString());
       return;
     }
   }
@@ -312,5 +369,17 @@ class HomeController extends GetxController {
     result = formattedNumber + result;
 
     return currency + result;
+  }
+
+  Future resetState() async {
+    Get.delete<HomeController>();
+    await Future.delayed(Duration.zero); // Menambahkan penundaan
+    Get.offAllNamed(Routes.SUCCESS_PAGE);
+  }
+
+  @override
+  void onClose() {
+    resetState();
+    super.onClose();
   }
 }

@@ -12,4 +12,5 @@ class EndPoint {
   static final product_endpoint = api_service + 'product';
   static final member_endpoint = api_service + 'member';
   static final app_endpoint = api_service + 'setting';
+  static final store_transaction_endpoint = api_service + 'penjualan/store';
 }

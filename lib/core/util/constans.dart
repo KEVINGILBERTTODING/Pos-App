@@ -7,4 +7,5 @@ class Constants {
   static const SUCCESS_STATE = "success_state";
   static const ERROR_STATE = "error_state";
   static const SERVER_ERR_STATE = "server_error_state";
+  static const SUCCESS_TRANS_MSG = "Transaksi berhasil";
 }

@@ -13,6 +13,7 @@ class LoginScreen extends GetView<AuthController> {
   Widget build(BuildContext context) {
     RxBool isObsecuredPass = true.obs;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Obx(
         () => Padding(

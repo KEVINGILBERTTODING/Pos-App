@@ -17,6 +17,7 @@ class DashboardEmployeeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Obx(
         () => Row(
           mainAxisSize: MainAxisSize.max,
@@ -24,7 +25,7 @@ class DashboardEmployeeScreen extends StatelessWidget {
             // Show the navigaiton rail if screen width >= 640
             if (MediaQuery.of(context).size.width >= 640)
               NavigationRail(
-                // backgroundColor: Colors.grey[200],
+                backgroundColor: Colors.white,
                 minWidth: 20.w,
                 selectedIndex: controller.stateSelectedIndex.value,
                 // Called when one tab is selected

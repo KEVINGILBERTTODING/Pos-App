@@ -206,4 +206,33 @@ class ApiService extends GetxService {
           data: null);
     }
   }
+
+  Future<ResponseApiModel> storeTransaction(Map<String, dynamic> data) async {
+    final responseApi =
+        await http.post(Uri.parse(EndPoint.store_transaction_endpoint),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(data));
+    try {
+      final dataResponse = await jsonDecode(responseApi.body);
+      if (responseApi.statusCode == 200) {
+        return ResponseApiModel(
+            message: 'Transaksi berhasil',
+            responsestate: Constants.SUCCESS_STATE,
+            data: null);
+      } else {
+        return ResponseApiModel(
+            message: 'Transaksi gagal',
+            responsestate: Constants.ERROR_STATE,
+            data: null);
+      }
+    } catch (e) {
+      // print('Gagal mengirim data transaksi: $e');
+      return ResponseApiModel(
+          message: 'Server Error',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
 }

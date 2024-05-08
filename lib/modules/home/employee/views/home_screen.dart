@@ -56,6 +56,7 @@ class HomeScreen extends StatelessWidget {
     print('nama perusahaan: ${appService.nama_perusahaan}');
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Obx(
           () => Row(
@@ -109,10 +110,11 @@ class HomeScreen extends StatelessWidget {
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                      SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 3,
                                     crossAxisSpacing: 8.0,
-                                    mainAxisExtent: 200,
+                                    mainAxisExtent:
+                                        220.h, // Ubah tinggi sesuai konten
                                     mainAxisSpacing: 8.0,
                                   ),
                                   itemCount:
@@ -136,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                 width: ScreenUtil().setWidth(20),
               ),
               Container(
-                padding: EdgeInsets.only(top: 10.w, right: 10.w),
+                padding: EdgeInsets.only(top: 8.h, right: 10.w),
                 width: 120.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -144,7 +146,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Daftar Pesanan",
-                      style: TextStyle(fontFamily: 'popsem', fontSize: 15),
+                      style: TextStyle(fontFamily: 'popsem', fontSize: 8.sp),
                     ),
                     SizedBox(
                       height: 10.h,
@@ -249,9 +251,19 @@ class HomeScreen extends StatelessWidget {
                               onTap: () {
                                 controller.deleteProduct(index);
                               },
-                              child: Icon(
-                                Icons.delete_outline,
-                                color: Colors.red[300],
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                child: Container(
+                                  color: Colors.red[100],
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.delete_outline,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           );
@@ -268,8 +280,8 @@ class HomeScreen extends StatelessWidget {
                                 ElevatedButton(
                                   style: ButtonStyle(
                                       elevation: MaterialStatePropertyAll(0),
-                                      backgroundColor:
-                                          MaterialStatePropertyAll(Colors.red)),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.red[100])),
                                   onPressed: () {
                                     controller.resetOrder();
                                   },
@@ -277,7 +289,7 @@ class HomeScreen extends StatelessWidget {
                                     'Batal',
                                     style: TextStyle(
                                         fontFamily: 'popmed',
-                                        color: Colors.white,
+                                        color: Colors.red,
                                         fontSize: 6.sp),
                                   ),
                                 ),
@@ -291,7 +303,7 @@ class HomeScreen extends StatelessWidget {
                                                 MaterialStateProperty.all(0),
                                             backgroundColor:
                                                 MaterialStatePropertyAll(
-                                                    Colors.blue)),
+                                                    Colors.blue[100])),
                                         onPressed: () async {
                                           final bool isValid = await controller
                                               .countTransaction();
@@ -306,7 +318,7 @@ class HomeScreen extends StatelessWidget {
                                           'Proses',
                                           style: TextStyle(
                                               fontFamily: 'popmed',
-                                              color: Colors.white,
+                                              color: Colors.blue,
                                               fontSize: 6.sp),
                                         ),
                                       ),
@@ -327,356 +339,368 @@ class HomeScreen extends StatelessWidget {
       borderRadius: BorderRadius.all(
         Radius.circular(15),
       ),
-      child: IntrinsicHeight(
-        child: Container(
-            padding: EdgeInsets.all(5.w),
-            color: Colors.grey[200],
-            width: 100.w,
-            height: 200.h,
-            child: Column(
-              children: [
-                Image.asset(
-                  'assets/img/food_example.png',
-                  width: 80.w,
-                  height: 80.h,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  truncateString(productItem.nama_produk.toString()),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'popmed', fontSize: 6.sp),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text(
-                  formatRupiah(productItem.harga_jual),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                productItem.stok == 0
-                    ? Text(
-                        'Habis',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: 'popreg',
-                            fontSize: 6.sp,
-                            color: Colors.red),
-                      )
-                    : Text(
-                        'x${productItem.stok.toString()}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
+      child: Container(
+        padding: EdgeInsets.all(5.w),
+        color: Colors.grey[200],
+        width: 100.w,
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/img/food_example.png',
+              width: 80.w,
+              height: 80.h,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              truncateString(productItem.nama_produk.toString()),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontFamily: 'popmed', fontSize: 6.sp),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Text(
+              formatRupiah(productItem.harga_jual),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            productItem.stok == 0
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8.w),
+                    child: Container(
+                      color: Colors.red[100],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Habis',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: 'popreg',
+                              fontSize: 6.sp,
+                              color: Colors.red),
+                        ),
                       ),
-              ],
-            )),
+                    ),
+                  )
+                : Text(
+                    'x${productItem.stok.toString()}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
+                  ),
+          ],
+        ),
       ),
     );
   }
 
-  ClipRRect bottom_sheet_transaction(HomeController controller) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      child: Container(
-        color: Colors.white,
-        width: double.infinity,
-        child: Padding(
-            padding: EdgeInsets.only(right: 10.w, top: 10.w, left: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Total Pembayaran',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'popmed',
-                              fontSize: 5.sp),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Obx(
-                          () => Text(
-                            formatRupiah(controller.totalTransaction.value),
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'popsem',
-                                fontSize: 10.sp),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          'Detail Pesanan',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'popmed',
-                              fontSize: 5.sp),
-                        ),
-                        ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: controller.penjualanDetailModelList.length,
-                          itemBuilder: (context, index) {
-                            var orderList = controller
-                                .penjualanDetailModelList.value[index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: Icon(
-                                Icons.shopping_bag_outlined,
-                                color: Colors.blue,
-                              ),
-                              title: Text(
-                                orderList.productName.toString(),
-                                style: TextStyle(
-                                    fontFamily: 'popmed',
-                                    fontSize: 6.sp,
-                                    color: Colors.black),
-                              ),
-                              subtitle: Text(
-                                'X ${orderList.jumlah}',
-                                style: TextStyle(
-                                    fontFamily: 'popmed',
-                                    fontSize: 6.sp,
-                                    color: Colors.black),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Detail Pembayaran',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'popmed',
-                              fontSize: 5.sp),
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        DropdownSearch<String>(
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              baseStyle: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'popmed',
-                                fontSize: 6.sp,
-                              ),
-                              dropdownSearchDecoration: InputDecoration(
-                                hintStyle: TextStyle(
+  Widget bottom_sheet_transaction(HomeController controller) {
+    return Obx(() => ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          child: Container(
+            color: Colors.white,
+            width: double.infinity,
+            child: Padding(
+                padding: EdgeInsets.only(right: 10.w, top: 10.w, left: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total Pembayaran',
+                              style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                labelText: "Pilih member",
-                                hintText: "Ketik atau pilih member",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Menambahkan border radius pada spinner
-                                ),
-                              ),
+                                  fontSize: 5.sp),
                             ),
-                            popupProps: PopupProps.menu(
-                              showSearchBox: true,
-                              searchFieldProps: TextFieldProps(
-                                style: TextStyle(
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Text(
+                              formatRupiah(controller.totalTransaction.value),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'popsem',
+                                  fontSize: 10.sp),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              'Detail Pesanan',
+                              style: TextStyle(
                                   color: Colors.black,
                                   fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                decoration: InputDecoration(
-                                  labelStyle: TextStyle(
+                                  fontSize: 5.sp),
+                            ),
+                            ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount:
+                                  controller.penjualanDetailModelList.length,
+                              itemBuilder: (context, index) {
+                                var orderList = controller
+                                    .penjualanDetailModelList.value[index];
+                                return ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: Icon(
+                                    Icons.shopping_bag_outlined,
+                                    color: Colors.blue,
+                                  ),
+                                  title: Text(
+                                    orderList.productName.toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'popmed',
+                                        fontSize: 6.sp,
+                                        color: Colors.black),
+                                  ),
+                                  subtitle: Text(
+                                    'X ${orderList.jumlah}',
+                                    style: TextStyle(
+                                        fontFamily: 'popmed',
+                                        fontSize: 6.sp,
+                                        color: Colors.black),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Detail Pembayaran',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'popmed',
+                                  fontSize: 5.sp),
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            DropdownSearch<String>(
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  baseStyle: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'popmed',
                                     fontSize: 6.sp,
                                   ),
-                                  hintText: 'Nama member',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  labelText: 'Cari member',
-                                ),
-                              ),
-                              showSelectedItems: true,
-                              menuProps: MenuProps(
-                                shape: RoundedRectangleBorder(
-                                  // Menambahkan border radius pada menu
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                              ),
-                            ),
-                            itemAsString: (String itemId) {
-                              final memberName = controller.memberList
-                                  .firstWhere((item) =>
-                                      item.id_member.toString() == itemId)
-                                  .nama;
-                              return memberName!;
-                            },
-                            items: controller.memberList.value
-                                .map((item) => item.id_member.toString())
-                                .toList(),
-                            onChanged: (value) {
-                              controller.controllerDiskon.text = controller
-                                  .appService.appModel.value.diskon
-                                  .toString();
-                              controller.countDiscount();
-                              controller.memberId.value = int.parse(value!);
-                            }),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TextField(
-                          controller: controller.controllerDiskon,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'popmed',
-                              fontSize: 6.sp,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: 'Diskon', // Added label
-
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: StylesApp.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TextField(
-                          controller: controller.controllerDiterima,
-                          inputFormatters: [
-                            CurrencyTextInputFormatter.currency(
-                              locale: 'ID',
-                              decimalDigits: 0,
-                              symbol: 'Rp. ',
-                            ),
-                          ],
-                          onChanged: (value) {
-                            Future.delayed(Duration(seconds: 1), () async {
-                              await controller.countExchange(value);
-                              // print(value);
-                            });
-                          },
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'popmed',
-                              fontSize: 6.sp,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: 'Diterima',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: StylesApp.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TextField(
-                          controller: controller.controllerKembalian,
-                          readOnly: true,
-                          inputFormatters: [
-                            CurrencyTextInputFormatter.currency()
-                          ],
-                          decoration: InputDecoration(
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'popmed',
-                              fontSize: 6.sp,
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: 'Kembali',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: StylesApp.primaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: controller.isLoadingTransaction.value
-                                  ? CircularProgressIndicator(
-                                      color: StylesApp.primaryColor,
-                                    )
-                                  : TextButton(
-                                      onPressed: () async {
-                                        await controller
-                                            .transactionValidation();
-                                      },
-                                      child: Text(
-                                        'Simpan Transaksi',
-                                        style: TextStyle(
-                                            fontFamily: 'popsem',
-                                            fontSize: 6.sp,
-                                            color: Colors.white),
-                                      ),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(
-                                                Colors.blue),
-                                      ),
+                                  dropdownSearchDecoration: InputDecoration(
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
                                     ),
+                                    labelText: "Pilih member",
+                                    hintText: "Ketik atau pilih member",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Menambahkan border radius pada spinner
+                                    ),
+                                  ),
+                                ),
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                    ),
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: 'popmed',
+                                        fontSize: 6.sp,
+                                      ),
+                                      hintText: 'Nama member',
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      labelText: 'Cari member',
+                                    ),
+                                  ),
+                                  showSelectedItems: true,
+                                  menuProps: MenuProps(
+                                    shape: RoundedRectangleBorder(
+                                      // Menambahkan border radius pada menu
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                  ),
+                                ),
+                                itemAsString: (String itemId) {
+                                  final memberName = controller.memberList
+                                      .firstWhere((item) =>
+                                          item.id_member.toString() == itemId)
+                                      .nama;
+                                  return memberName!;
+                                },
+                                items: controller.memberList.value
+                                    .map((item) => item.id_member.toString())
+                                    .toList(),
+                                onChanged: (value) {
+                                  controller.controllerDiskon.text = controller
+                                      .appService.appModel.value.diskon
+                                      .toString();
+                                  controller.countDiscount();
+                                  controller.memberId.value = int.parse(value!);
+                                }),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextField(
+                              controller: controller.controllerDiskon,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'popmed',
+                                  fontSize: 6.sp,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelText: 'Diskon', // Added label
+
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: StylesApp.primaryColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextField(
+                              controller: controller.controllerDiterima,
+                              inputFormatters: [
+                                CurrencyTextInputFormatter.currency(
+                                  locale: 'ID',
+                                  decimalDigits: 0,
+                                  symbol: 'Rp. ',
+                                ),
+                              ],
+                              onChanged: (value) {
+                                Future.delayed(Duration(seconds: 1), () async {
+                                  await controller.countExchange(value);
+                                  // print(value);
+                                });
+                              },
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'popmed',
+                                  fontSize: 6.sp,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelText: 'Diterima',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: StylesApp.primaryColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextField(
+                              controller: controller.controllerKembalian,
+                              readOnly: true,
+                              inputFormatters: [
+                                CurrencyTextInputFormatter.currency()
+                              ],
+                              decoration: InputDecoration(
+                                labelStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'popmed',
+                                  fontSize: 6.sp,
+                                ),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                labelText: 'Kembali',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: StylesApp.primaryColor,
+                                      width: 2.0),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: controller.isLoadingTransaction.value
+                                      ? CircularProgressIndicator(
+                                          color: StylesApp.primaryColor,
+                                        )
+                                      : TextButton(
+                                          onPressed: () async {
+                                            await controller
+                                                .transactionValidation();
+                                          },
+                                          child: Text(
+                                            'Simpan Transaksi',
+                                            style: TextStyle(
+                                                fontFamily: 'popsem',
+                                                fontSize: 6.sp,
+                                                color: Colors.blue),
+                                          ),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStatePropertyAll(
+                                                    Colors.blue[100]),
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.h,
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )),
-      ),
-    );
+                      ),
+                    )
+                  ],
+                )),
+          ),
+        ));
   }
 }
