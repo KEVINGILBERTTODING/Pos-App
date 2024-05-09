@@ -125,8 +125,8 @@ class LoginScreen extends GetView<AuthController> {
                                         width: 70.w,
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 15, horizontal: 10),
-                                        decoration: const BoxDecoration(
-                                            color: StylesApp.primaryColor,
+                                        decoration: BoxDecoration(
+                                            color: Colors.blue[50],
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(10))),
                                         child: Text(
@@ -135,7 +135,7 @@ class LoginScreen extends GetView<AuthController> {
                                           style: TextStyle(
                                               fontFamily: 'popmed',
                                               fontSize: 7.sp,
-                                              color: Colors.black),
+                                              color: Colors.blue),
                                         ),
                                       ),
                               ))

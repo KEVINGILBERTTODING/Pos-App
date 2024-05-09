@@ -80,9 +80,6 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(fontFamily: 'popreg', fontSize: 10),
                         ),
                       ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
                       TextField(
                         onChanged: (value) {
                           Future.delayed(Duration(seconds: 1), () async {
@@ -161,7 +158,7 @@ class HomeScreen extends StatelessWidget {
                 width: ScreenUtil().setWidth(20),
               ),
               Container(
-                padding: EdgeInsets.only(top: 8.h, right: 10.w),
+                padding: EdgeInsets.only(top: 10.h, right: 10.w),
                 width: 120.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -477,9 +474,18 @@ class HomeScreen extends StatelessWidget {
                                     .penjualanDetailModelList.value[index];
                                 return ListTile(
                                   contentPadding: EdgeInsets.zero,
-                                  leading: Icon(
-                                    Icons.shopping_bag_outlined,
-                                    color: Colors.blue,
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      color: Colors.blue[50],
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.shopping_bag_outlined,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   title: Text(
                                     orderList.productName.toString(),

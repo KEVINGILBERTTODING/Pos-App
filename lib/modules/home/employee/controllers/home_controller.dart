@@ -300,8 +300,6 @@ class HomeController extends GetxController {
     int id_member = memberId.value;
     int totalItem = countTotalItem();
 
-    int totalDiterima = cleanCurrencyFormat(controllerDiterima.text);
-
     if (userId == 0) {
       Get.snackbar('Error', 'Anda tidak memilki akses');
       print('user id not found');
@@ -327,8 +325,20 @@ class HomeController extends GetxController {
       return;
     }
 
+    if (controllerDiterima.text == '' || controllerDiterima.text.isEmpty) {
+      Get.snackbar('Error', 'Nominal diterima tidak boleh kosong');
+      return;
+    }
+    int totalDiterima = cleanCurrencyFormat(controllerDiterima.text);
+
     if (totalDiterima == 0) {
       Get.snackbar('Error', 'Total diterima tidak valid');
+
+      return;
+    }
+
+    if (totalTransaction > totalDiterima) {
+      Get.snackbar('Error', 'Nominal pembayaran kurang');
 
       return;
     }

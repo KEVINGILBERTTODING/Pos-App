@@ -31,7 +31,48 @@ class DashboardEmployeeScreen extends StatelessWidget {
                 // Called when one tab is selected
                 onDestinationSelected: (int index) {
                   controller.stateSelectedIndex.value = index;
-                  print(controller.stateSelectedIndex.value);
+                  if (index == 2) {
+                    Get.dialog(
+                      barrierColor: Colors.white,
+                      AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          'Peringatan!',
+                          style: TextStyle(
+                              fontFamily: 'popmed',
+                              fontSize: 8.sp,
+                              color: Colors.black),
+                        ),
+                        content: Text(
+                          'Apakah anda yakin ingin keluar?',
+                          style: TextStyle(
+                              fontFamily: 'popmed',
+                              fontSize: 6.sp,
+                              color: Colors.black),
+                        ),
+                        actions: [
+                          TextButton(
+                            child: Text("Tidak",
+                                style: TextStyle(
+                                    fontFamily: 'popmed',
+                                    fontSize: 6.sp,
+                                    color: Colors.black)),
+                            onPressed: () => Get.back(),
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Ya, keluar",
+                              style: TextStyle(
+                                  fontFamily: 'popmed',
+                                  fontSize: 6.sp,
+                                  color: Colors.red),
+                            ),
+                            onPressed: () async => await controller.logOut(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
                 labelType: NavigationRailLabelType.all,
                 selectedLabelTextStyle: TextStyle(
