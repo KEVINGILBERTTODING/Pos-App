@@ -5,6 +5,7 @@ class EndPoint {
 
   static final api_service = 'http://$ip_address:8000/api/';
   static final base_url = 'http://$ip_address:8000/';
+  static final base_url_image = 'http://$ip_address:8000';
   static final auth_endpoint = api_service + 'auth';
   static final profile_endpoint = api_service + 'profile/';
   static final update_profile_endpoint = api_service + 'profile/update/';

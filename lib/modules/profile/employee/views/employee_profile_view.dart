@@ -52,7 +52,7 @@ class EmployeeProfileScreen extends StatelessWidget {
                             height: 60,
                             child: ClipOval(
                               child: Image.network(
-                                EndPoint.base_url +
+                                EndPoint.base_url_image +
                                     controller.clientModel.value.foto
                                         .toString(),
                                 fit: BoxFit.cover,

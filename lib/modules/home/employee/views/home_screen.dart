@@ -627,10 +627,13 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                               onChanged: (value) {
-                                Future.delayed(Duration(seconds: 1), () async {
-                                  await controller.countExchange(value);
-                                  // print(value);
-                                });
+                                if (value != '' || !value.isEmpty) {
+                                  Future.delayed(Duration(seconds: 1),
+                                      () async {
+                                    await controller.countExchange(value);
+                                    // print(value);
+                                  });
+                                }
                               },
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
