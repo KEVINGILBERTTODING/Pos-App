@@ -7,6 +7,7 @@ abstract class Routes {
   static const DASBOARD_EMPLOYEE = _Paths.DASHBORD_EMPLOYEE;
   static const EMPLOYEE_PROFILE = _Paths.EMPLOYEE_PROFILE;
   static const SUCCESS_PAGE = _Paths.SUCCESS_PAGE;
+  static const DASHBOARD_ADMIN = _Paths.DASBOARD_ADMIN;
 }
 
 abstract class _Paths {
@@ -15,4 +16,5 @@ abstract class _Paths {
   static const DASHBORD_EMPLOYEE = '/dashboard_employee';
   static const EMPLOYEE_PROFILE = '/profile_employee';
   static const SUCCESS_PAGE = '/success_page';
+  static const DASBOARD_ADMIN = '/dashboard_admin';
 }

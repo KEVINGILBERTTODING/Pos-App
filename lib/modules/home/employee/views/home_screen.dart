@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/core/models/product/product_model.dart';
+import 'package:pos_app/core/services/remote/end_point.dart';
 import 'package:pos_app/core/util/constans.dart';
 import 'package:pos_app/modules/home/employee/bindings/home_binding.dart';
 import 'package:pos_app/modules/home/employee/controllers/home_controller.dart';
@@ -365,10 +366,14 @@ class HomeScreen extends StatelessWidget {
         width: 100.w,
         child: Column(
           children: [
-            Image.asset(
-              'assets/img/food_example.png',
+            Image.network(
+              '${EndPoint.base_url_product_image + productItem.img!}',
               width: 80.w,
               height: 80.h,
+              errorBuilder: (context, error, stackTrace) {
+                print(error.toString());
+                return Icon(Icons.error);
+              },
             ),
             SizedBox(
               height: 10.h,
@@ -410,7 +415,10 @@ class HomeScreen extends StatelessWidget {
                 : Text(
                     'x${productItem.stok.toString()}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: 'popreg', fontSize: 6.sp),
+                    style: TextStyle(
+                        fontFamily: 'popreg',
+                        fontSize: 5.sp,
+                        color: Colors.grey),
                   ),
           ],
         ),
