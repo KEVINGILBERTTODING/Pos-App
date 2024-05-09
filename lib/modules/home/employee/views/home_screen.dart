@@ -278,7 +278,7 @@ class HomeScreen extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
                                 child: Container(
-                                  color: Colors.red[100],
+                                  color: Colors.red[50],
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Icon(
@@ -304,7 +304,7 @@ class HomeScreen extends StatelessWidget {
                                   style: ButtonStyle(
                                       elevation: MaterialStatePropertyAll(0),
                                       backgroundColor: MaterialStatePropertyAll(
-                                          Colors.red[100])),
+                                          Colors.red[50])),
                                   onPressed: () {
                                     controller.resetOrder();
                                   },
@@ -326,7 +326,7 @@ class HomeScreen extends StatelessWidget {
                                                 MaterialStateProperty.all(0),
                                             backgroundColor:
                                                 MaterialStatePropertyAll(
-                                                    Colors.blue[100])),
+                                                    Colors.blue[50])),
                                         onPressed: () async {
                                           final bool isValid = await controller
                                               .countTransaction();
@@ -364,7 +364,7 @@ class HomeScreen extends StatelessWidget {
       ),
       child: Container(
         padding: EdgeInsets.all(5.w),
-        color: Colors.grey[200],
+        color: Colors.grey[50],
         width: 100.w,
         child: Column(
           children: [
@@ -396,7 +396,7 @@ class HomeScreen extends StatelessWidget {
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(8.w),
                     child: Container(
-                      color: Colors.red[100],
+                      color: Colors.red[50],
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -708,7 +708,7 @@ class HomeScreen extends StatelessWidget {
                                           style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStatePropertyAll(
-                                                    Colors.blue[100]),
+                                                    Colors.blue[50]),
                                           ),
                                         ),
                                 ),

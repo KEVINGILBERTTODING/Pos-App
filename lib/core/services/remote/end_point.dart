@@ -4,7 +4,7 @@ class EndPoint {
   // static final ip_address = '192.168.1.10'; // wifi kos
 
   static final api_service = 'http://$ip_address:8000/api/';
-  static final base_url = 'http://$ip_address:8000';
+  static final base_url = 'http://$ip_address:8000/';
   static final auth_endpoint = api_service + 'auth';
   static final profile_endpoint = api_service + 'profile/';
   static final update_profile_endpoint = api_service + 'profile/update/';
@@ -14,4 +14,5 @@ class EndPoint {
   static final app_endpoint = api_service + 'setting';
   static final store_transaction_endpoint = api_service + 'penjualan/store';
   static final search_product_endpoint = api_service + 'search/product';
+  static final nota_transaction_endpoint = base_url + 'nota/';
 }

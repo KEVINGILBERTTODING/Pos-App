@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:pos_app/core/util/constans.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pos_app/modules/home/employee/controllers/success_controller.dart';
+import 'package:pos_app/modules/home/employee/widgets/modal_nota.dart';
 import 'package:pos_app/routes/app_pages.dart';
 
-class SuccessPage extends StatelessWidget {
+class SuccessPage extends GetView<SuccessController> {
   const SuccessPage({super.key});
 
   @override
@@ -53,10 +55,12 @@ class SuccessPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.showModalNota();
+                          },
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStatePropertyAll(Colors.amber[100]),
+                                MaterialStatePropertyAll(Colors.amber[50]),
                             elevation: MaterialStatePropertyAll(0),
                           ),
                           child: Text(
@@ -76,7 +80,7 @@ class SuccessPage extends StatelessWidget {
                           },
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStatePropertyAll(Colors.blue[100]),
+                                MaterialStatePropertyAll(Colors.blue[50]),
                             elevation: MaterialStatePropertyAll(0),
                           ),
                           child: Text(

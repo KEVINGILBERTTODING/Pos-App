@@ -363,7 +363,7 @@ class HomeController extends GetxController {
     final PenjualanModel penjualanModel = responseApiModel.data;
 
     if (responseApiModel.responsestate == Constants.SUCCESS_STATE) {
-      await resetState();
+      await resetState(penjualanModel.id_penjualan);
       print(penjualanModel.id_penjualan);
       return;
     } else {
@@ -414,15 +414,14 @@ class HomeController extends GetxController {
     return currency + result;
   }
 
-  Future resetState() async {
+  Future resetState(int penjualanId) async {
     Get.delete<HomeController>();
     await Future.delayed(Duration.zero); // Menambahkan penundaan
-    Get.offAllNamed(Routes.SUCCESS_PAGE);
-  }
-
-  @override
-  void onClose() {
-    resetState();
-    super.onClose();
+    if (penjualanId > 1) {
+      Get.offAllNamed(
+        Routes.SUCCESS_PAGE,
+        arguments: {'penjualan_id': penjualanId},
+      );
+    }
   }
 }
