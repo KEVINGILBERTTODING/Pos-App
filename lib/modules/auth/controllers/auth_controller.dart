@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:pos_app/core/models/api/response_api_model.dart';
+import 'package:pos_app/core/models/user/client_model.dart';
 import 'package:pos_app/core/services/remote/api_service.dart';
 import 'package:pos_app/core/services/user_service.dart';
 import 'package:pos_app/core/util/constans.dart';
@@ -38,12 +39,18 @@ class AuthController extends GetxController {
 
     if (responseApiModel.responsestate == Constants.SUCCESS_STATE &&
         responseApiModel.data != null) {
+      final ClientModel clientModel = responseApiModel.data;
       await userService.initSharedPref();
       // save user info
       await userService.saveUserInfo(responseApiModel.data);
       isLoading.value = false;
       Get.snackbar("Berhasil", responseApiModel.message.toString());
-      Get.offAllNamed(Routes.DASBOARD_EMPLOYEE);
+      if (clientModel.role == 1) {
+        // admin
+        Get.offAllNamed(Routes.DASHBOARD_ADMIN);
+      } else if (clientModel.role == 2) {
+        Get.offAllNamed(Routes.DASBOARD_EMPLOYEE);
+      }
       return;
     } else {
       isLoading.value = false;

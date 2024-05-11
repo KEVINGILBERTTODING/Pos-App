@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 import 'package:pos_app/modules/auth/bindings/auth_binding.dart';
 import 'package:pos_app/modules/auth/views/login_view.dart';
+import 'package:pos_app/modules/category/binding/category_binding.dart';
+import 'package:pos_app/modules/category/views/category_view.dart';
 import 'package:pos_app/modules/dashboard/admin/bindings/dashboard_admin_binding.dart';
 import 'package:pos_app/modules/dashboard/admin/views/dashboard_admin.dart';
 import 'package:pos_app/modules/dashboard/employee/bindings/dashboard_employee_binding.dart';
+import 'package:pos_app/modules/home/admin/bindings/home_admin_binding.dart';
+import 'package:pos_app/modules/home/admin/views/home_admin_screen.dart';
 import 'package:pos_app/modules/home/employee/views/success_page.dart';
 import 'package:pos_app/modules/home/employee/bindings/home_binding.dart';
 import 'package:pos_app/modules/dashboard/employee/views/dashboard_employee.dart';
@@ -47,7 +51,17 @@ class AppPages {
     GetPage(
       name: _Paths.DASBOARD_ADMIN,
       page: () => DashboardAdminScreen(),
-      binding: DashboardAdminBinding(),
+      // binding: DashboardAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_ADMIN,
+      page: () => HomeAdminScreen(),
+      binding: HomeAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATEGORY,
+      page: () => CategoryView(),
+      binding: CategoryBinding(),
     ),
   ];
 }

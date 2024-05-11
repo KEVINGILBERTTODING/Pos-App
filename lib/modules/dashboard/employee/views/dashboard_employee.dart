@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/dashboard/employee/controllers/dashboard_employee_controller.dart';
+import 'package:pos_app/modules/dashboard/employee/widget/onrail_admin_menu.dart';
 import 'package:pos_app/modules/dashboard/employee/widget/onrail_menu.dart';
 import 'package:pos_app/modules/home/employee/views/home_screen.dart';
 import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
@@ -111,7 +112,7 @@ class DashboardEmployeeScreen extends StatelessWidget {
             // This part is always shown
             // You will see it on both small and wide screen
             Expanded(
-                child: EmployeeOnRailMenu
+                child: AdminOnRailMenu
                     .menuContent[controller.stateSelectedIndex.value]),
           ],
         ),

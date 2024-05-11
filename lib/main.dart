@@ -50,7 +50,9 @@ class MainApp extends StatelessWidget {
         builder: (_, context) {
           return GetMaterialApp(
             initialRoute: sharedUserData.is_login
-                ? Routes.DASBOARD_EMPLOYEE
+                ? sharedUserData.role == 1
+                    ? Routes.DASHBOARD_ADMIN
+                    : Routes.DASBOARD_EMPLOYEE
                 : Routes.LOGIN,
             getPages: AppPages.routes,
           );

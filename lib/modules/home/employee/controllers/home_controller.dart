@@ -39,26 +39,6 @@ class HomeController extends GetxController {
   RxInt disscount = 0.obs;
   RxList<ProductModel> productModelList2 = <ProductModel>[].obs;
 
-  Future<void> initCategory() async {
-    try {
-      final getCategory = await apiService.getCategory();
-      if (getCategory.responsestate == Constants.SUCCESS_STATE) {
-        kategoryModelList.addAll(getCategory.data);
-        print(kategoryModelList.value.toString());
-        return;
-      }
-      print('gagal get produk');
-
-      Get.snackbar('Error', 'Gagal memuat data kategori');
-      return;
-    } catch (e) {
-      print(e.toString());
-
-      Get.snackbar('Error', e.toString());
-      return;
-    }
-  }
-
   Future<void> getProduct() async {
     if (productModelList.value.isEmpty) {
       try {

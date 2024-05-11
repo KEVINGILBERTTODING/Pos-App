@@ -96,7 +96,8 @@ class ApiService extends GetxService {
 
   Future<ResponseApiModel> getCategory() async {
     try {
-      final responseApi = await http.get(Uri.parse(EndPoint.category_endpoint));
+      final responseApi =
+          await http.get(Uri.parse(EndPoint.category_endpoints));
       if (responseApi.statusCode == 200) {
         final dataResponse = await jsonDecode(responseApi.body);
         final responseApiModel = await ResponseApiModel(
@@ -268,6 +269,57 @@ class ApiService extends GetxService {
       return ResponseApiModel(
           responsestate: Constants.ERROR_STATE,
           message: 'Server error',
+          data: null);
+    }
+  }
+
+  Future<ResponseApiModel> storeCategory(String category) async {
+    final Map<String, String> data = {'nama_kategori': category};
+    try {
+      final responseApi = await http
+          .post(Uri.parse(EndPoint.category_store_endpoints), body: data);
+
+      if (responseApi.statusCode == 200) {
+        return ResponseApiModel(
+            message: 'Berhasil menyimpan data',
+            responsestate: Constants.SUCCESS_STATE,
+            data: null);
+      }
+
+      return ResponseApiModel(
+          message: 'Gagal menyimpan data',
+          responsestate: Constants.ERROR_STATE,
+          data: null);
+    } catch (e) {
+      print(e.toString());
+      return ResponseApiModel(
+          message: 'Terjadi kesalahan server',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
+
+  Future<ResponseApiModel> destroyCategory(int categoryId) async {
+    try {
+      final responseApi = await http.delete(Uri.parse(
+          EndPoint.category_destroy_endpoints + categoryId.toString()));
+
+      if (responseApi.statusCode == 204) {
+        return ResponseApiModel(
+            message: 'Berhasil menghapus data',
+            responsestate: Constants.SUCCESS_STATE,
+            data: null);
+      }
+
+      return ResponseApiModel(
+          message: 'Gagal menghapus data',
+          responsestate: Constants.ERROR_STATE,
+          data: null);
+    } catch (e) {
+      print(e.toString());
+      return ResponseApiModel(
+          message: 'Terjadi kesalahan server',
+          responsestate: Constants.SERVER_ERR_STATE,
           data: null);
     }
   }
