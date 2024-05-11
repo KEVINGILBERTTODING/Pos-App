@@ -222,4 +222,18 @@ class ProductController extends GetxController {
 
     return cleanNumber;
   }
+
+  Future<void> destroy(int productId) async {
+    final responseApi = await apiService.destroyProduct(productId);
+    if (responseApi.responsestate == Constants.SUCCESS_STATE) {
+      Get.snackbar('Berhasil', 'Produk berhasil di hapus');
+
+      productModelList.clear();
+      productModelList2.clear();
+      await getProduct();
+    } else {
+      Get.snackbar('Error', responseApi.message.toString());
+      return;
+    }
+  }
 }

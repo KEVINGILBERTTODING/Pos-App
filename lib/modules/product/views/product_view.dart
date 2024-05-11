@@ -48,6 +48,26 @@ class ProductScreen extends StatelessWidget {
                           style: TextStyle(fontFamily: 'popreg', fontSize: 10),
                         ),
                       ),
+                      TextField(
+                        onChanged: (value) {
+                          Future.delayed(Duration(seconds: 1), () async {
+                            await controller.searchProduct(value);
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Cari produk',
+                          prefixIcon: Icon(Icons.search),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
                       if (controller.isLoadingProduct.value)
                         CircularProgressIndicator(
                           backgroundColor: Colors.blue[50],
@@ -64,6 +84,7 @@ class ProductScreen extends StatelessWidget {
                         )
                       else
                         ListView.builder(
+                          padding: EdgeInsets.only(top: 20.h),
                           scrollDirection: Axis.vertical,
                           itemCount: controller.productModelList.length,
                           shrinkWrap: true,
@@ -96,8 +117,8 @@ class ProductScreen extends StatelessWidget {
                               ),
                               trailing: GestureDetector(
                                 onTap: () async {
-                                  // await controller.destroyMember(
-                                  //     productList.id_member, index);
+                                  await controller
+                                      .destroy(productList.id_produk);
                                 },
                                 child: ClipRRect(
                                   borderRadius:
