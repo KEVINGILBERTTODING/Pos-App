@@ -49,6 +49,7 @@ class MainApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (_, context) {
           return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
             initialRoute: sharedUserData.is_login
                 ? sharedUserData.role == 1
                     ? Routes.DASHBOARD_ADMIN

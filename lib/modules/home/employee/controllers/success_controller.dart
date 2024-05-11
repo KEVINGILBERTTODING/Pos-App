@@ -1,8 +1,13 @@
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:pos_app/core/services/remote/end_point.dart';
+import 'package:pos_app/core/services/user_service.dart';
 import 'package:pos_app/modules/home/employee/widgets/modal_nota.dart';
 
 class SuccessController extends GetxController {
+  final userService = Get.put(UserService());
+
   int penjualanId = 0;
   @override
   void onInit() {

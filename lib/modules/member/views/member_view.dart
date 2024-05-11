@@ -5,15 +5,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/category/binding/category_binding.dart';
 import 'package:pos_app/modules/category/controllers/category_controller.dart';
+import 'package:pos_app/modules/member/bindings/member_binding.dart';
+import 'package:pos_app/modules/member/controllers/member_controller.dart';
 
-class CategoryView extends StatelessWidget {
-  const CategoryView({super.key});
+class MemberScreen extends StatelessWidget {
+  const MemberScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CategoryController());
-    CategoryBinding().dependencies;
-    controller.getCategory();
+    final controller = Get.put(MemberController());
+    MemberBinding().dependencies;
+    controller.getMember();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -31,11 +34,11 @@ class CategoryView extends StatelessWidget {
                       ListTile(
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          'Kategori',
+                          'Member',
                           style: TextStyle(fontFamily: 'popsem', fontSize: 20),
                         ),
                         subtitle: Text(
-                          'Halaman untuk menambahkan kategori baru.',
+                          'Halaman untuk menambahkan member baru.',
                           style: TextStyle(fontFamily: 'popreg', fontSize: 10),
                         ),
                       ),
@@ -44,7 +47,7 @@ class CategoryView extends StatelessWidget {
                           backgroundColor: Colors.blue[50],
                           color: Colors.blue,
                         )
-                      else if (controller.categoryModelList.value.isEmpty)
+                      else if (controller.memberModelList.value.isEmpty)
                         Text(
                           'Tidak ada data.',
                           style: TextStyle(
@@ -56,25 +59,32 @@ class CategoryView extends StatelessWidget {
                       else
                         ListView.builder(
                           scrollDirection: Axis.vertical,
-                          itemCount: controller.categoryModelList.length,
+                          itemCount: controller.memberModelList.length,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            var categoryList =
-                                controller.categoryModelList.value[index];
+                            var memberList =
+                                controller.memberModelList.value[index];
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
                               title: Text(
-                                categoryList.nama_kategori.toString(),
+                                memberList.nama.toString(),
                                 style: TextStyle(
                                     fontFamily: 'popmed',
                                     color: Colors.black,
                                     fontSize: 6.sp),
                               ),
+                              subtitle: Text(
+                                memberList.telepon.toString(),
+                                style: TextStyle(
+                                    fontFamily: 'popreg',
+                                    color: Colors.blue,
+                                    fontSize: 5.sp),
+                              ),
                               trailing: GestureDetector(
                                 onTap: () async {
-                                  await controller.destroyCategory(
-                                      categoryList.id_kategori, index);
+                                  await controller.destroyMember(
+                                      memberList.id_member, index);
                                 },
                                 child: ClipRRect(
                                   borderRadius:
@@ -110,14 +120,14 @@ class CategoryView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Tambah Kategori",
+                        "Tambah Member Baru",
                         style: TextStyle(fontFamily: 'popsem', fontSize: 8.sp),
                       ),
                       SizedBox(
                         height: 15.h,
                       ),
                       TextField(
-                        controller: controller.controllerNamaKategori,
+                        controller: controller.namaMemberController,
                         decoration: InputDecoration(
                           labelStyle: TextStyle(
                             color: Colors.black,
@@ -125,7 +135,55 @@ class CategoryView extends StatelessWidget {
                             fontSize: 6.sp,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelText: 'Nama kategori',
+                          labelText: 'Nama',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextField(
+                        controller: controller.teleponMemberController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'popmed',
+                            fontSize: 6.sp,
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Telepon',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextField(
+                        controller: controller.alamatMemberController,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'popmed',
+                            fontSize: 6.sp,
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          labelText: 'Alamat',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -153,7 +211,7 @@ class CategoryView extends StatelessWidget {
                                   alignment: Alignment.topRight,
                                   child: TextButton(
                                     onPressed: () async {
-                                      await controller.storeCategory();
+                                      await controller.validationStore();
                                     },
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(

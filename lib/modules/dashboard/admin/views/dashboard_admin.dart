@@ -107,6 +107,9 @@ class DashboardAdminScreen extends StatelessWidget {
                             icon: Icon(Icons.category_outlined),
                             label: Text('Kategori')),
                         NavigationRailDestination(
+                            icon: Icon(Icons.group_outlined),
+                            label: Text('Member')),
+                        NavigationRailDestination(
                             icon: Icon(Icons.local_drink_outlined),
                             label: Text('Produk')),
                         NavigationRailDestination(

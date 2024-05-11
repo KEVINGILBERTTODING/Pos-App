@@ -15,6 +15,8 @@ class EndPoint {
   static final category_destroy_endpoints = api_service + 'category/destroy/';
   static final product_endpoint = api_service + 'product';
   static final member_endpoint = api_service + 'member';
+  static final member_store_endpoint = api_service + 'member/store';
+  static final member_destroy_endpoint = api_service + 'member/destroy/';
   static final app_endpoint = api_service + 'setting';
   static final store_transaction_endpoint = api_service + 'penjualan/store';
   static final search_product_endpoint = api_service + 'search/product';

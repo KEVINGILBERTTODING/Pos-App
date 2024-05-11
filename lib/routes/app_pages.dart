@@ -13,6 +13,8 @@ import 'package:pos_app/modules/home/employee/bindings/home_binding.dart';
 import 'package:pos_app/modules/dashboard/employee/views/dashboard_employee.dart';
 import 'package:pos_app/modules/home/employee/bindings/success_binding.dart';
 import 'package:pos_app/modules/home/employee/views/home_screen.dart';
+import 'package:pos_app/modules/member/bindings/member_binding.dart';
+import 'package:pos_app/modules/member/views/member_view.dart';
 import 'package:pos_app/modules/profile/employee/bindings/employee_profile_binding.dart';
 import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
 
@@ -62,6 +64,11 @@ class AppPages {
       name: _Paths.CATEGORY,
       page: () => CategoryView(),
       binding: CategoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEMBER,
+      page: () => MemberScreen(),
+      binding: MemberBinding(),
     ),
   ];
 }

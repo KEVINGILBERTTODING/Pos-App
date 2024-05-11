@@ -75,8 +75,15 @@ class SuccessPage extends GetView<SuccessController> {
                           width: 10.w,
                         ),
                         TextButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.DASBOARD_EMPLOYEE);
+                          onPressed: () async {
+                            if (await controller.userService
+                                    .getPrefInt(Constants.ROLE) ==
+                                1) {
+                              // admin
+                              Get.toNamed(Routes.DASHBOARD_ADMIN);
+                            } else {
+                              Get.toNamed(Routes.DASBOARD_EMPLOYEE); // employee
+                            }
                           },
                           style: ButtonStyle(
                             backgroundColor:
