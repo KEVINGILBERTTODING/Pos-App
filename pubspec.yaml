@@ -23,6 +23,9 @@ dependencies:
   currency_text_input_formatter: ^2.2.2
   lottie: ^3.1.0
   webview_flutter: ^4.7.0
+  permission_handler: ^11.3.1
+  font_awesome_flutter: ^10.7.0
+  image_picker: ^1.1.1
 
 dev_dependencies:
   flutter_test:

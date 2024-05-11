@@ -373,4 +373,40 @@ class ApiService extends GetxService {
           data: null);
     }
   }
+
+  Future<ResponseApiModel> storeProduct(
+      String imagePath, Map<String, String> map) async {
+    try {
+      final request = await http.MultipartRequest(
+          'POST', Uri.parse(EndPoint.product_store_endpoint));
+
+      map.forEach((key, value) {
+        request.fields[key] = value;
+      });
+
+      request.files.add(await http.MultipartFile.fromPath('gambar', imagePath));
+
+      var responseApi = await request.send();
+      var responseBody = await responseApi.stream.bytesToString();
+
+      if (responseApi.statusCode == 204) {
+        return ResponseApiModel(
+            message: 'Berhasil menyimpan data',
+            responsestate: Constants.SUCCESS_STATE,
+            data: null);
+      }
+
+      print(responseBody);
+      return ResponseApiModel(
+          message: 'Gagal menyimpan data',
+          responsestate: Constants.ERROR_STATE,
+          data: null);
+    } catch (e) {
+      print(e.toString());
+      return ResponseApiModel(
+          message: 'Terjadi kesalahan server',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
 }

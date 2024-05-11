@@ -3,6 +3,7 @@ import 'package:pos_app/modules/category/views/category_view.dart';
 import 'package:pos_app/modules/home/admin/views/home_admin_screen.dart';
 import 'package:pos_app/modules/home/employee/views/home_screen.dart';
 import 'package:pos_app/modules/member/views/member_view.dart';
+import 'package:pos_app/modules/product/views/product_view.dart';
 import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
 
 abstract class AdminOnRailMenu {
@@ -12,6 +13,7 @@ abstract class AdminOnRailMenu {
     HomeScreen(),
     CategoryView(),
     MemberScreen(),
+    ProductScreen(),
     // EmployeeProfileScreen(),
     // EmployeeProfileScreen(),
   ];

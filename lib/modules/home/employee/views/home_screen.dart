@@ -532,75 +532,76 @@ class HomeScreen extends StatelessWidget {
                               height: 15.h,
                             ),
                             DropdownSearch<String>(
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  baseStyle: TextStyle(
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                baseStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'popmed',
+                                  fontSize: 6.sp,
+                                ),
+                                dropdownSearchDecoration: InputDecoration(
+                                  hintStyle: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'popmed',
                                     fontSize: 6.sp,
                                   ),
-                                  dropdownSearchDecoration: InputDecoration(
-                                    hintStyle: TextStyle(
+                                  labelText: "Pilih member",
+                                  hintText: "Ketik atau pilih member",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        10), // Menambahkan border radius pada spinner
+                                  ),
+                                ),
+                              ),
+                              popupProps: PopupProps.menu(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'popmed',
+                                    fontSize: 6.sp,
+                                  ),
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'popmed',
                                       fontSize: 6.sp,
                                     ),
-                                    labelText: "Pilih member",
-                                    hintText: "Ketik atau pilih member",
+                                    hintText: 'Nama member',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Menambahkan border radius pada spinner
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
+                                    labelText: 'Cari member',
                                   ),
                                 ),
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'popmed',
-                                      fontSize: 6.sp,
-                                    ),
-                                    decoration: InputDecoration(
-                                      labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: 'popmed',
-                                        fontSize: 6.sp,
-                                      ),
-                                      hintText: 'Nama member',
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      labelText: 'Cari member',
-                                    ),
-                                  ),
-                                  showSelectedItems: true,
-                                  menuProps: MenuProps(
-                                    shape: RoundedRectangleBorder(
-                                      // Menambahkan border radius pada menu
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                    ),
+                                showSelectedItems: true,
+                                menuProps: MenuProps(
+                                  shape: RoundedRectangleBorder(
+                                    // Menambahkan border radius pada menu
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
                                   ),
                                 ),
-                                itemAsString: (String itemId) {
-                                  final memberName = controller.memberList
-                                      .firstWhere((item) =>
-                                          item.id_member.toString() == itemId)
-                                      .nama;
-                                  return memberName!;
-                                },
-                                items: controller.memberList.value
-                                    .map((item) => item.id_member.toString())
-                                    .toList(),
-                                onChanged: (value) {
-                                  controller.controllerDiskon.text = controller
-                                      .appService.appModel.value.diskon
-                                      .toString();
-                                  controller.countDiscount();
-                                  controller.memberId.value = int.parse(value!);
-                                }),
+                              ),
+                              itemAsString: (String itemId) {
+                                final memberName = controller.memberList
+                                    .firstWhere((item) =>
+                                        item.id_member.toString() == itemId)
+                                    .nama;
+                                return memberName!;
+                              },
+                              items: controller.memberList.value
+                                  .map((item) => item.id_member.toString())
+                                  .toList(),
+                              onChanged: (value) {
+                                controller.controllerDiskon.text = controller
+                                    .appService.appModel.value.diskon
+                                    .toString();
+                                controller.countDiscount();
+                                controller.memberId.value = int.parse(value!);
+                              },
+                            ),
                             SizedBox(
                               height: 10.h,
                             ),
