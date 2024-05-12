@@ -26,6 +26,7 @@ dependencies:
   permission_handler: ^11.3.1
   font_awesome_flutter: ^10.7.0
   image_picker: ^1.1.1
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   flutter_test:

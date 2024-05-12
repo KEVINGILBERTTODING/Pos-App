@@ -23,5 +23,6 @@ class EndPoint {
   static final app_endpoint = api_service + 'setting';
   static final store_transaction_endpoint = api_service + 'penjualan/store';
   static final search_product_endpoint = api_service + 'search/product';
+  static final dashboard_endpoint = api_service + 'dashboard/';
   static final nota_transaction_endpoint = base_url + 'nota/';
 }

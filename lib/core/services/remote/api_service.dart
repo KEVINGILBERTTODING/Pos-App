@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pos_app/core/models/api/response_api_model.dart';
 import 'package:pos_app/core/models/app/app_model.dart';
 import 'package:pos_app/core/models/category/kategori_model.dart';
+import 'package:pos_app/core/models/dashboard/dashboard_model.dart';
 import 'package:pos_app/core/models/member/member_model.dart';
 import 'package:pos_app/core/models/penjualan/penjualan_model.dart';
 import 'package:pos_app/core/models/product/product_model.dart';
@@ -469,6 +470,32 @@ class ApiService extends GetxService {
       print(e.toString());
       return ResponseApiModel(
           message: 'Terjadi kesalahan server',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
+
+  Future<ResponseApiModel> dashboard() async {
+    try {
+      final responseApiModel =
+          await http.get(Uri.parse(EndPoint.dashboard_endpoint));
+
+      if (responseApiModel.statusCode == 200 && responseApiModel.body != null) {
+        final dataResponse = jsonDecode(responseApiModel.body);
+        return ResponseApiModel(
+            message: 'Berhasil memuat data dashboard',
+            responsestate: Constants.SUCCESS_STATE,
+            data: DashboardModel.fromJson(dataResponse['data']));
+      } else {
+        return ResponseApiModel(
+            message: 'Gagal memuat data dashboard',
+            responsestate: Constants.ERROR_STATE,
+            data: null);
+      }
+    } catch (e) {
+      print('error get dashboard: ${e.toString()}');
+      return ResponseApiModel(
+          message: 'Server error',
           responsestate: Constants.SERVER_ERR_STATE,
           data: null);
     }
