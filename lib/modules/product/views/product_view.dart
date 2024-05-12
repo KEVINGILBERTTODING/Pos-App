@@ -20,7 +20,7 @@ class ProductScreen extends StatelessWidget {
     ProductBinding().dependencies;
     controller.resetStateStore();
 
-    controller.getProduct();
+    controller.getProductData();
     controller.getCategory();
 
     return Scaffold(
@@ -50,9 +50,7 @@ class ProductScreen extends StatelessWidget {
                       ),
                       TextField(
                         onChanged: (value) {
-                          Future.delayed(Duration(seconds: 1), () async {
-                            await controller.searchProduct(value);
-                          });
+                          controller.searchProduct(value);
                         },
                         decoration: InputDecoration(
                           hintText: 'Cari produk',
@@ -68,18 +66,27 @@ class ProductScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       if (controller.isLoadingProduct.value)
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.blue[50],
-                          color: Colors.blue,
+                        Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.blue[50],
+                            color: Colors.blue,
+                          ),
                         )
                       else if (controller.productModelList.value.isEmpty)
-                        Text(
-                          'Tidak ada data.',
-                          style: TextStyle(
-                            fontFamily: 'popmed',
-                            fontSize: 6.sp,
-                            color: Colors.black,
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Tidak ada data.',
+                            style: TextStyle(
+                              fontFamily: 'popmed',
+                              fontSize: 6.sp,
+                              color: Colors.black,
+                            ),
                           ),
                         )
                       else
@@ -92,44 +99,51 @@ class ProductScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             var productList =
                                 controller.productModelList.value[index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: Image.network(
-                                '${EndPoint.base_url_product_image + productList.img!}',
-                                errorBuilder: (context, error, stackTrace) {
-                                  print(error.toString());
-                                  return Icon(Icons.error);
-                                },
-                              ),
-                              title: Text(
-                                productList.nama_produk.toString(),
-                                style: TextStyle(
-                                    fontFamily: 'popmed',
-                                    color: Colors.black,
-                                    fontSize: 6.sp),
-                              ),
-                              subtitle: Text(
-                                'X${productList.stok.toString()}',
-                                style: TextStyle(
-                                    fontFamily: 'popreg',
-                                    color: Colors.blue,
-                                    fontSize: 6.sp),
-                              ),
-                              trailing: GestureDetector(
-                                onTap: () async {
-                                  await controller
-                                      .destroy(productList.id_produk);
-                                },
-                                child: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  child: Container(
-                                    color: Colors.red[50],
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        Icons.delete_outline,
-                                        color: Colors.red,
+                            return GestureDetector(
+                              onTap: () {
+                                controller.productModel = productList;
+                                controller.setProductEdit();
+                                print(controller.productModel.toString());
+                              },
+                              child: ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: Image.network(
+                                  '${EndPoint.base_url_product_image + productList.img!}',
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print(error.toString());
+                                    return Icon(Icons.error);
+                                  },
+                                ),
+                                title: Text(
+                                  productList.nama_produk.toString(),
+                                  style: TextStyle(
+                                      fontFamily: 'popmed',
+                                      color: Colors.black,
+                                      fontSize: 6.sp),
+                                ),
+                                subtitle: Text(
+                                  'X${productList.stok.toString()}',
+                                  style: TextStyle(
+                                      fontFamily: 'popreg',
+                                      color: Colors.blue,
+                                      fontSize: 6.sp),
+                                ),
+                                trailing: GestureDetector(
+                                  onTap: () async {
+                                    await controller
+                                        .destroy(productList.id_produk);
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    child: Container(
+                                      color: Colors.red[50],
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          CupertinoIcons.delete,
+                                          color: Colors.red,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -148,331 +162,382 @@ class ProductScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(top: 10.h, right: 10.w),
                 width: 120.w,
-                child: SingleChildScrollView(
-                  child: controller.isLoadingCategory.value
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.blue[50],
-                            color: Colors.blue,
-                          ),
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Tambah Produk Baru",
-                              style: TextStyle(
-                                  fontFamily: 'popsem', fontSize: 8.sp),
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            TextField(
-                              controller: controller.namaProductController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Nama produk',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            DropdownSearch<String>(
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  baseStyle: TextStyle(
-                                    color: Colors.black,
+                child: controller.isLoadingCategory.value
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.blue[50],
+                          color: Colors.blue,
+                        ),
+                      )
+                    : controller.categoryModelList.isEmpty
+                        ? Center(
+                            child: Center(
+                              child: Text(
+                                'Gagal memuat kategori.',
+                                style: TextStyle(
                                     fontFamily: 'popmed',
                                     fontSize: 6.sp,
-                                  ),
-                                  dropdownSearchDecoration: InputDecoration(
-                                    hintStyle: TextStyle(
+                                    color: Colors.grey),
+                              ),
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  controller.isEditable.value
+                                      ? "Ubah Data Produk"
+                                      : "Tambah Produk Baru",
+                                  style: TextStyle(
+                                      fontFamily: 'popsem', fontSize: 8.sp),
+                                ),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                TextField(
+                                  controller: controller.namaProductController,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
                                       color: Colors.black,
                                       fontFamily: 'popmed',
                                       fontSize: 6.sp,
                                     ),
-                                    labelText: "Pilih kategori",
-                                    labelStyle: TextStyle(
-                                        fontFamily: 'popmed',
-                                        fontSize: 5.sp,
-                                        color: Colors.black),
-                                    hintText: "Ketik atau pilih kategori",
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Nama produk',
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Menambahkan border radius pada spinner
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
                                 ),
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'popmed',
-                                      fontSize: 6.sp,
-                                    ),
-                                    decoration: InputDecoration(
-                                      labelStyle: TextStyle(
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                DropdownSearch<String>(
+                                    dropdownDecoratorProps:
+                                        DropDownDecoratorProps(
+                                      baseStyle: TextStyle(
                                         color: Colors.black,
                                         fontFamily: 'popmed',
                                         fontSize: 6.sp,
                                       ),
-                                      hintText: 'Kategori',
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      labelText: 'Cari kategori',
-                                    ),
-                                  ),
-                                  showSelectedItems: true,
-                                  menuProps: MenuProps(
-                                    shape: RoundedRectangleBorder(
-                                      // Menambahkan border radius pada menu
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                    ),
-                                  ),
-                                ),
-                                itemAsString: (String itemId) {
-                                  final categoryName = controller
-                                      .categoryModelList
-                                      .firstWhere((item) =>
-                                          item.id_kategori.toString() == itemId)
-                                      .nama_kategori;
-                                  return categoryName!;
-                                },
-                                items: controller.categoryModelList.value
-                                    .map((item) => item.id_kategori.toString())
-                                    .toList(),
-                                onChanged: (value) {
-                                  controller.kategoriId = value.toString();
-                                  // controller.countDiscount();
-                                  // controller.memberId.value = int.parse(value!);
-                                }),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TextField(
-                              controller: controller.merkProductController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Merk',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TextField(
-                              controller: controller.hrgBeliProductController,
-                              inputFormatters: [
-                                CurrencyTextInputFormatter.currency(
-                                  locale: 'ID',
-                                  decimalDigits: 0,
-                                  symbol: 'Rp. ',
-                                ),
-                              ],
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Harga beli',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TextField(
-                              controller: controller.hrgJualProductController,
-                              inputFormatters: [
-                                CurrencyTextInputFormatter.currency(
-                                  locale: 'ID',
-                                  decimalDigits: 0,
-                                  symbol: 'Rp. ',
-                                ),
-                              ],
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Harga jual',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TextField(
-                              keyboardType: TextInputType.number,
-                              controller: controller.diskonProductController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Diskon',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TextField(
-                              keyboardType: TextInputType.number,
-                              controller: controller.stokProductController,
-                              decoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelText: 'Stok',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            if (controller.imageFile.value != '')
-                              SizedBox(
-                                width: 60.w,
-                                height: 60.h,
-                                child: Image.file(
-                                    File(controller.imageFile.value)),
-                              )
-                            else
-                              Container(),
-                            TextButton(
-                              onPressed: () async {
-                                await controller.getImage();
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
-                                  Colors.green[50],
-                                ),
-                              ),
-                              child: Text(
-                                'Pilih gambar',
-                                style: TextStyle(
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Stack(
-                              children: [
-                                controller.isLoadingStore.value == true
-                                    ? Align(
-                                        alignment: Alignment.topRight,
-                                        child: CircularProgressIndicator(
-                                          backgroundColor: Colors.blue[50],
-                                          color: Colors.blue,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        hintStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'popmed',
+                                          fontSize: 6.sp,
                                         ),
-                                      )
-                                    : Align(
-                                        alignment: Alignment.topRight,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            controller.inputValidation();
-                                          },
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStatePropertyAll(
-                                              Colors.blue[50],
-                                            ),
+                                        labelText: "Pilih kategori",
+                                        labelStyle: TextStyle(
+                                            fontFamily: 'popmed',
+                                            fontSize: 5.sp,
+                                            color: Colors.black),
+                                        hintText: "Ketik atau pilih kategori",
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              10), // Menambahkan border radius pada spinner
+                                        ),
+                                      ),
+                                    ),
+                                    popupProps: PopupProps.menu(
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'popmed',
+                                          fontSize: 6.sp,
+                                        ),
+                                        decoration: InputDecoration(
+                                          labelStyle: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'popmed',
+                                            fontSize: 6.sp,
                                           ),
-                                          child: Text(
-                                            'Simpan data',
-                                            style: TextStyle(
-                                              fontFamily: 'popmed',
-                                              fontSize: 6.sp,
+                                          hintText: 'Kategori',
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.always,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          labelText: 'Cari kategori',
+                                        ),
+                                      ),
+                                      showSelectedItems: true,
+                                      menuProps: MenuProps(
+                                        shape: RoundedRectangleBorder(
+                                          // Menambahkan border radius pada menu
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                      ),
+                                    ),
+                                    itemAsString: (String itemId) {
+                                      final categoryName = controller
+                                          .categoryModelList
+                                          .firstWhere((item) =>
+                                              item.id_kategori.toString() ==
+                                              itemId)
+                                          .nama_kategori;
+                                      return categoryName!;
+                                    },
+                                    items: controller.categoryModelList.value
+                                        .map((item) =>
+                                            item.id_kategori.toString())
+                                        .toList(),
+                                    onChanged: (value) {
+                                      controller.kategoriId = value.toString();
+                                      // controller.countDiscount();
+                                      // controller.memberId.value = int.parse(value!);
+                                    }),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                TextField(
+                                  controller: controller.merkProductController,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Merk',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                TextField(
+                                  controller:
+                                      controller.hrgBeliProductController,
+                                  inputFormatters: [
+                                    CurrencyTextInputFormatter.currency(
+                                      locale: 'ID',
+                                      decimalDigits: 0,
+                                      symbol: 'Rp. ',
+                                    ),
+                                  ],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Harga beli',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                TextField(
+                                  controller:
+                                      controller.hrgJualProductController,
+                                  inputFormatters: [
+                                    CurrencyTextInputFormatter.currency(
+                                      locale: 'ID',
+                                      decimalDigits: 0,
+                                      symbol: 'Rp. ',
+                                    ),
+                                  ],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Harga jual',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                TextField(
+                                  keyboardType: TextInputType.number,
+                                  controller:
+                                      controller.diskonProductController,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Diskon',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                TextField(
+                                  keyboardType: TextInputType.number,
+                                  controller: controller.stokProductController,
+                                  decoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    labelText: 'Stok',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                if (controller.isEditable.value &&
+                                    controller.imageFile.value == '')
+                                  SizedBox(
+                                      width: 60.w,
+                                      height: 60.h,
+                                      child: Image.network(
+                                        '${EndPoint.base_url_product_image + controller.productModel.img.toString()}',
+                                      ))
+                                else if (controller.imageFile.value != '')
+                                  SizedBox(
+                                    width: 60.w,
+                                    height: 60.h,
+                                    child: Image.file(
+                                        File(controller.imageFile.value)),
+                                  )
+                                else
+                                  Container(),
+                                TextButton(
+                                  onPressed: () async {
+                                    await controller.getImage();
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                      Colors.green[50],
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Pilih gambar',
+                                    style: TextStyle(
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Stack(
+                                  children: [
+                                    controller.isLoadingStore.value == true
+                                        ? Align(
+                                            alignment: Alignment.topRight,
+                                            child: CircularProgressIndicator(
+                                              backgroundColor: Colors.blue[50],
                                               color: Colors.blue,
                                             ),
-                                          ),
-                                        ),
-                                      ),
+                                          )
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  controller.resetStateStore();
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStatePropertyAll(
+                                                    Colors.red[50],
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Reset data',
+                                                  style: TextStyle(
+                                                    fontFamily: 'popmed',
+                                                    fontSize: 6.sp,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  controller.inputValidation();
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStatePropertyAll(
+                                                    Colors.blue[50],
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Simpan data',
+                                                  style: TextStyle(
+                                                    fontFamily: 'popmed',
+                                                    fontSize: 6.sp,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                ),
+                            ),
+                          ),
               ),
             ],
           ),

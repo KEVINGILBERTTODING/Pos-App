@@ -1,14 +1,12 @@
 import 'dart:ffi';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/dashboard/admin/controllers/dashboard_admin_controller.dart';
 import 'package:pos_app/modules/dashboard/employee/widget/onrail_admin_menu.dart';
-import 'package:pos_app/modules/dashboard/employee/widget/onrail_menu.dart';
-import 'package:pos_app/modules/home/employee/views/home_screen.dart';
-import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
 import 'package:pos_app/styles/styles.dart';
 
 class DashboardAdminScreen extends StatelessWidget {
@@ -38,7 +36,7 @@ class DashboardAdminScreen extends StatelessWidget {
                       // Called when one tab is selected
                       onDestinationSelected: (int index) {
                         controller.stateSelectedIndex.value = index;
-                        if (index == 5) {
+                        if (index == 6) {
                           Get.dialog(
                             barrierColor: Colors.white,
                             AlertDialog(
@@ -98,27 +96,36 @@ class DashboardAdminScreen extends StatelessWidget {
                       // navigation rail items
                       destinations: const [
                         NavigationRailDestination(
-                            icon: Icon(Icons.home_outlined),
+                            icon: Icon(
+                              CupertinoIcons.app_badge,
+                              weight: 2.0,
+                            ),
                             label: Text('Home')),
                         NavigationRailDestination(
-                            icon: Icon(Icons.shopping_bag_outlined),
+                            icon: Icon(
+                              CupertinoIcons.shopping_cart,
+                              weight: 2.0,
+                            ),
                             label: Text('Penjualan')),
                         NavigationRailDestination(
-                            icon: Icon(Icons.category_outlined),
+                            icon: Icon(CupertinoIcons.square_favorites),
                             label: Text('Kategori')),
                         NavigationRailDestination(
-                            icon: Icon(Icons.group_outlined),
+                            icon: Icon(
+                              CupertinoIcons.person_2,
+                              weight: 2.0,
+                            ),
                             label: Text('Member')),
                         NavigationRailDestination(
-                            icon: Icon(Icons.local_drink_outlined),
+                            icon: Icon(CupertinoIcons.cube_box),
                             label: Text('Produk')),
                         NavigationRailDestination(
                             indicatorColor: StylesApp.primaryColor,
-                            icon: Icon(Icons.person_outline),
+                            icon: Icon(CupertinoIcons.person_alt_circle),
                             label: Text('Profil')),
                         NavigationRailDestination(
                             indicatorColor: StylesApp.primaryColor,
-                            icon: Icon(Icons.logout_outlined),
+                            icon: Icon(CupertinoIcons.arrow_right_circle),
                             label: Text('Keluar')),
                       ],
                     ),

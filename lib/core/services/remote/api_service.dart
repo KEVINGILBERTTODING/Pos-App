@@ -434,4 +434,43 @@ class ApiService extends GetxService {
           data: null);
     }
   }
+
+  Future<ResponseApiModel> updateProduct(
+      String imagePath, Map<String, String> map) async {
+    try {
+      final request = await http.MultipartRequest(
+          'POST', Uri.parse(EndPoint.product_update_endpoint));
+
+      map.forEach((key, value) {
+        request.fields[key] = value;
+      });
+
+      if (imagePath != '') {
+        request.files
+            .add(await http.MultipartFile.fromPath('gambar', imagePath));
+      }
+
+      var responseApi = await request.send();
+      var responseBody = await responseApi.stream.bytesToString();
+
+      if (responseApi.statusCode == 204) {
+        return ResponseApiModel(
+            message: 'Berhasil mengubah data',
+            responsestate: Constants.SUCCESS_STATE,
+            data: null);
+      }
+
+      print(responseBody);
+      return ResponseApiModel(
+          message: 'Gagal mengubah data',
+          responsestate: Constants.ERROR_STATE,
+          data: null);
+    } catch (e) {
+      print(e.toString());
+      return ResponseApiModel(
+          message: 'Terjadi kesalahan server',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
 }

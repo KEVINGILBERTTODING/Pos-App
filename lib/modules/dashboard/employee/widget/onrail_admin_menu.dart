@@ -14,7 +14,7 @@ abstract class AdminOnRailMenu {
     CategoryView(),
     MemberScreen(),
     ProductScreen(),
-    // EmployeeProfileScreen(),
-    // EmployeeProfileScreen(),
+    EmployeeProfileScreen(),
+    EmployeeProfileScreen(),
   ];
 }

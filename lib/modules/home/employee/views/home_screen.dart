@@ -52,7 +52,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
     HomeBinding().dependencies;
-    controller.getProduct();
+    controller.penjualanDetailModelList.clear();
+    controller.getProductData();
     final appService = controller.appService.appModel.value;
     print('nama perusahaan: ${appService.nama_perusahaan}');
 
@@ -83,9 +84,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       TextField(
                         onChanged: (value) {
-                          Future.delayed(Duration(seconds: 1), () async {
-                            await controller.searchProduct(value);
-                          });
+                          controller.searchProduct(value);
                         },
                         decoration: InputDecoration(
                           hintText: 'Cari produk',
@@ -95,8 +94,8 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: StylesApp.primaryColor, width: 2.0),
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -114,10 +113,11 @@ class HomeScreen extends StatelessWidget {
                       controller.isLoadingProduct.value
                           ? Center(
                               child: CircularProgressIndicator(
-                                color: StylesApp.primaryColor,
+                                color: Colors.blue,
+                                backgroundColor: Colors.blue[50],
                               ),
                             )
-                          : controller.productModelList.value.length < 0
+                          : controller.productModelList.value.isEmpty
                               ? Center(
                                   child: Text(
                                     'Tidak ada produk',
@@ -173,123 +173,141 @@ class HomeScreen extends StatelessWidget {
                       height: 10.h,
                     ),
                     Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: controller.penjualanDetailModelList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          var orderList =
-                              controller.penjualanDetailModelList.value[index];
+                      child: controller.penjualanDetailModelList.isEmpty
+                          ? Center(
+                              child: Text(
+                                'Tidak ada pesanan',
+                                style: TextStyle(
+                                    fontFamily: 'popmed',
+                                    fontSize: 6.sp,
+                                    color: Colors.grey),
+                              ),
+                            )
+                          : ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount:
+                                  controller.penjualanDetailModelList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                var orderList = controller
+                                    .penjualanDetailModelList.value[index];
 
-                          // controller.foodList.isEmpty ?
+                                // controller.foodList.isEmpty ?
 
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(
-                              orderList.productName.toString(),
-                              style: TextStyle(
-                                  fontFamily: 'popmed',
-                                  fontSize: 6.sp,
-                                  color: Colors.black),
-                            ),
-                            subtitle: SizedBox(
-                              width: double.infinity,
-                              height: 40
-                                  .h, // Added height to prevent crash due to unbounded height
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text('X'),
-                                  SizedBox(width: 5.w),
-                                  SizedBox(
-                                    width: 35.w,
-                                    child: TextFormField(
-                                      onChanged: (value) {
-                                        int? parsedValue = int.tryParse(value);
-                                        if (parsedValue == null) {
-                                          return;
-                                        }
-                                        if (parsedValue == 0) {
-                                          Get.snackbar(
-                                              'Error', 'Invalid input');
-                                          controller
-                                                  .controllerStock[
-                                                      orderList.id_produk]
-                                                  ?.text =
-                                              orderList.total_stock.toString();
-                                          return;
-                                        }
-                                        if (parsedValue >
-                                            orderList.total_stock) {
-                                          Get.snackbar('Error',
-                                              'Stok produk tidak cukup');
-                                          controller
-                                                  .controllerStock[
-                                                      orderList.id_produk]
-                                                  ?.text =
-                                              orderList.total_stock.toString();
-                                          return;
-                                        }
-                                        Future.delayed(Duration(seconds: 1),
-                                            () async {
-                                          await controller.editQty(
-                                              orderList, parsedValue);
-                                        });
-                                      },
-                                      maxLines: 1,
-                                      controller: controller
-                                          .controllerStock[orderList.id_produk],
-                                      textAlign: TextAlign.center,
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                            left: 0,
-                                            top: 0,
-                                            bottom: 0,
-                                            right: 0),
-                                        hintText: '',
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.always,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                return ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: Text(
+                                    orderList.productName.toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'popmed',
+                                        fontSize: 6.sp,
+                                        color: Colors.black),
+                                  ),
+                                  subtitle: SizedBox(
+                                    width: double.infinity,
+                                    height: 40
+                                        .h, // Added height to prevent crash due to unbounded height
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('X'),
+                                        SizedBox(width: 5.w),
+                                        SizedBox(
+                                          width: 35.w,
+                                          child: TextFormField(
+                                            onChanged: (value) {
+                                              int? parsedValue =
+                                                  int.tryParse(value);
+                                              if (parsedValue == null) {
+                                                return;
+                                              }
+                                              if (parsedValue == 0) {
+                                                Get.snackbar(
+                                                    'Error', 'Invalid input');
+                                                controller
+                                                        .controllerStock[
+                                                            orderList.id_produk]
+                                                        ?.text =
+                                                    orderList.total_stock
+                                                        .toString();
+                                                return;
+                                              }
+                                              if (parsedValue >
+                                                  orderList.total_stock) {
+                                                Get.snackbar('Error',
+                                                    'Stok produk tidak cukup');
+                                                controller
+                                                        .controllerStock[
+                                                            orderList.id_produk]
+                                                        ?.text =
+                                                    orderList.total_stock
+                                                        .toString();
+                                                return;
+                                              }
+                                              Future.delayed(
+                                                  Duration(seconds: 1),
+                                                  () async {
+                                                await controller.editQty(
+                                                    orderList, parsedValue);
+                                              });
+                                            },
+                                            maxLines: 1,
+                                            controller:
+                                                controller.controllerStock[
+                                                    orderList.id_produk],
+                                            textAlign: TextAlign.center,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 0,
+                                                  top: 0,
+                                                  bottom: 0,
+                                                  right: 0),
+                                              hintText: '',
+                                              floatingLabelBehavior:
+                                                  FloatingLabelBehavior.always,
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color:
+                                                        StylesApp.primaryColor,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: StylesApp.primaryColor,
-                                              width: 2.0),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                      ],
+                                    ),
+                                  ),
+                                  trailing: GestureDetector(
+                                    onTap: () {
+                                      controller.deleteProduct(index);
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      child: Container(
+                                        color: Colors.red[50],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            CupertinoIcons.delete,
+                                            color: Colors.red,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            trailing: GestureDetector(
-                              onTap: () {
-                                controller.deleteProduct(index);
+                                );
                               },
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                                child: Container(
-                                  color: Colors.red[50],
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.delete_outline,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
-                          );
-                        },
-                      ),
                     ),
                     controller.penjualanDetailModelList.isEmpty
                         ? Container()
@@ -709,7 +727,8 @@ class HomeScreen extends StatelessWidget {
                                   alignment: Alignment.topRight,
                                   child: controller.isLoadingTransaction.value
                                       ? CircularProgressIndicator(
-                                          color: StylesApp.primaryColor,
+                                          color: Colors.blue,
+                                          backgroundColor: Colors.blue[50],
                                         )
                                       : TextButton(
                                           onPressed: () async {

@@ -24,7 +24,8 @@ class EmployeeProfileScreen extends StatelessWidget {
           () => controller.isLoading.value
               ? Center(
                   child: CircularProgressIndicator(
-                    color: StylesApp.primaryColor,
+                    color: Colors.blue,
+                    backgroundColor: Colors.blue[50],
                   ),
                 )
               : Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:pos_app/modules/category/binding/category_binding.dart';
 import 'package:pos_app/modules/category/controllers/category_controller.dart';
@@ -39,20 +40,28 @@ class CategoryView extends StatelessWidget {
                           style: TextStyle(fontFamily: 'popreg', fontSize: 10),
                         ),
                       ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       if (controller.isLoading.value)
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.blue[50],
-                          color: Colors.blue,
-                        )
-                      else if (controller.categoryModelList.value.isEmpty)
-                        Text(
-                          'Tidak ada data.',
-                          style: TextStyle(
-                            fontFamily: 'popmed',
-                            fontSize: 6.sp,
-                            color: Colors.black,
+                        Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.blue[50],
+                            color: Colors.blue,
                           ),
                         )
+                      else if (controller.categoryModelList.value.isEmpty)
+                        Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Tidak ada data.',
+                              style: TextStyle(
+                                fontFamily: 'popmed',
+                                fontSize: 6.sp,
+                                color: Colors.black,
+                              ),
+                            ))
                       else
                         ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -64,6 +73,7 @@ class CategoryView extends StatelessWidget {
                                 controller.categoryModelList.value[index];
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
+                              leading: Icon(CupertinoIcons.square_favorites),
                               title: Text(
                                 categoryList.nama_kategori.toString(),
                                 style: TextStyle(
@@ -84,7 +94,7 @@ class CategoryView extends StatelessWidget {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Icon(
-                                        Icons.delete_outline,
+                                        CupertinoIcons.delete,
                                         color: Colors.red,
                                       ),
                                     ),

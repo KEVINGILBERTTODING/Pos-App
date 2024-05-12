@@ -39,60 +39,58 @@ class HomeController extends GetxController {
   RxInt disscount = 0.obs;
   RxList<ProductModel> productModelList2 = <ProductModel>[].obs;
 
-  Future<void> getProduct() async {
-    if (productModelList.value.isEmpty) {
-      try {
-        isLoadingProduct.value = true;
-        final getProduct = await apiService.getProduct();
-        isLoadingProduct.value = false;
+  Future<void> getProductData() async {
+    try {
+      productModelList.clear();
+      isLoadingProduct.value = true;
+      final getProduct = await apiService.getProduct();
+      isLoadingProduct.value = false;
 
-        if (getProduct.responsestate == Constants.SUCCESS_STATE) {
-          productModelList.addAll(getProduct.data);
-          productModelList2.addAll(getProduct.data);
-          print('berhasul get produk');
-          setupControllers();
-          return;
-        }
-        print('gagal get produk');
+      if (getProduct.responsestate == Constants.SUCCESS_STATE) {
+        productModelList.addAll(getProduct.data);
 
-        Get.snackbar('Error', 'Gagal memuat data kategori');
-        return;
-      } catch (e) {
-        print(e.toString());
-
-        Get.snackbar('Error', e.toString());
         return;
       }
+      print('gagal get produk');
+
+      Get.snackbar('Error', 'Gagal memuat data kategori');
+      return;
+    } catch (e) {
+      print(e.toString());
+
+      Get.snackbar('Error', e.toString());
+      return;
     }
   }
 
   Future<void> searchProduct(String query) async {
     isLoadingProduct.value = true;
+
     try {
       // jika search bar kosong
       if (query.isEmpty || query == '') {
         productModelList.clear();
+        await getProductData();
 
-        productModelList.addAll(productModelList2.toList());
         isLoadingProduct.value = false;
         return;
-      }
+      } else {
+        // jika search bar tidak kosong
+        final getProduct = await apiService.searchProduct(query);
+        isLoadingProduct.value = false;
 
-      // jika search bar tidak kosong
-      final getProduct = await apiService.searchProduct(query);
-      isLoadingProduct.value = false;
+        if (getProduct.responsestate == Constants.SUCCESS_STATE) {
+          productModelList
+              .clear(); // Clear the list before adding new search results
+          productModelList.addAll(getProduct.data);
+          print('berhasil get produk');
 
-      if (getProduct.responsestate == Constants.SUCCESS_STATE) {
-        productModelList.clear();
+          return;
+        }
+        print('gagal search produk');
 
-        productModelList.addAll(getProduct.data);
-        print('berhasul get produk');
-        setupControllers();
         return;
       }
-      print('gagal search produk');
-
-      return;
     } catch (e) {
       isLoadingProduct.value = false;
 

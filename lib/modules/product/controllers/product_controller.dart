@@ -10,7 +10,6 @@ import 'package:pos_app/core/util/constans.dart';
 
 class ProductController extends GetxController {
   RxList<ProductModel> productModelList = <ProductModel>[].obs;
-  RxList<ProductModel> productModelList2 = <ProductModel>[].obs;
   RxList<KategoriModel> categoryModelList = <KategoriModel>[].obs;
   RxBool isLoadingProduct = false.obs;
   RxBool isLoadingCategory = false.obs;
@@ -26,61 +25,62 @@ class ProductController extends GetxController {
   TextEditingController stokProductController = TextEditingController();
   String kategoriId = '';
   RxBool isLoadingStore = false.obs;
+  RxBool isEditable = false.obs;
+  int productId = 0;
+  ProductModel productModel = ProductModel();
 
-  Future<void> getProduct() async {
-    if (productModelList.value.isEmpty) {
-      try {
-        isLoadingProduct.value = true;
-        final getProduct = await apiService.getProduct();
-        isLoadingProduct.value = false;
+  Future<void> getProductData() async {
+    try {
+      productModelList.clear();
+      isLoadingProduct.value = true;
+      final getProduct = await apiService.getProduct();
+      isLoadingProduct.value = false;
 
-        if (getProduct.responsestate == Constants.SUCCESS_STATE) {
-          productModelList.addAll(getProduct.data);
-          productModelList2.addAll(getProduct.data);
-          print('berhasul get produk');
+      if (getProduct.responsestate == Constants.SUCCESS_STATE) {
+        productModelList.addAll(getProduct.data);
 
-          return;
-        }
-        print('gagal get produk');
-
-        Get.snackbar('Error', 'Gagal memuat data kategori');
-        return;
-      } catch (e) {
-        print(e.toString());
-
-        Get.snackbar('Error', e.toString());
         return;
       }
+      print('gagal get produk');
+
+      Get.snackbar('Error', 'Gagal memuat data kategori');
+      return;
+    } catch (e) {
+      print(e.toString());
+
+      Get.snackbar('Error', e.toString());
+      return;
     }
   }
 
   Future<void> searchProduct(String query) async {
     isLoadingProduct.value = true;
+
     try {
       // jika search bar kosong
       if (query.isEmpty || query == '') {
         productModelList.clear();
+        await getProductData();
 
-        productModelList.addAll(productModelList2.toList());
         isLoadingProduct.value = false;
         return;
-      }
+      } else {
+        // jika search bar tidak kosong
+        final getProduct = await apiService.searchProduct(query);
+        isLoadingProduct.value = false;
 
-      // jika search bar tidak kosong
-      final getProduct = await apiService.searchProduct(query);
-      isLoadingProduct.value = false;
+        if (getProduct.responsestate == Constants.SUCCESS_STATE) {
+          productModelList
+              .clear(); // Clear the list before adding new search results
+          productModelList.addAll(getProduct.data);
+          print('berhasil get produk');
 
-      if (getProduct.responsestate == Constants.SUCCESS_STATE) {
-        productModelList.clear();
-
-        productModelList.addAll(getProduct.data);
-        print('berhasil get produk');
+          return;
+        }
+        print('gagal search produk');
 
         return;
       }
-      print('gagal search produk');
-
-      return;
     } catch (e) {
       isLoadingProduct.value = false;
 
@@ -165,23 +165,53 @@ class ProductController extends GetxController {
       return;
     }
 
-    if (imageFile.isEmpty || imageFile == '' || imageFile == null) {
-      Get.snackbar('Error', 'Gambar produk tidak boleh kosong');
-      return;
+    Map<String, String> data = {};
+
+    if (isEditable.value != true) {
+      // store produk baru
+      // bukan edit produk
+      if (imageFile.isEmpty || imageFile == '' || imageFile == null) {
+        Get.snackbar('Error', 'Gambar produk tidak boleh kosong');
+        return;
+      } else {
+        data = {
+          'merk': merkProductController.text,
+          'id_kategori': kategoriId,
+          'nama_produk': namaProductController.text,
+          'harga_beli': cleanCurrencyFormat(hrgBeliProductController.text),
+          'harga_jual': cleanCurrencyFormat(hrgJualProductController.text),
+          'stok': stokProductController.text,
+          'diskon': diskonProductController.text
+        };
+        storeProduct(imageFile.value, data);
+        return;
+      }
+    } else {
+      // edit produkk
+      if (productId == 0) {
+        Get.snackbar('Error', 'Product tidak valid');
+        return;
+      } else {
+        data = {
+          'id_produk': productId.toString(),
+          'merk': merkProductController.text,
+          'id_kategori': kategoriId,
+          'nama_produk': namaProductController.text,
+          'harga_beli': cleanCurrencyFormat(hrgBeliProductController.text),
+          'harga_jual': cleanCurrencyFormat(hrgJualProductController.text),
+          'stok': stokProductController.text,
+          'diskon': diskonProductController.text
+        };
+
+        if (imageFile.value != '') {
+          updateProduct(imageFile.value, data);
+          return;
+        } else {
+          updateProduct('', data);
+          return;
+        }
+      }
     }
-
-    // preparing before post
-    final Map<String, String> data = {
-      'merk': merkProductController.text,
-      'id_kategori': kategoriId,
-      'nama_produk': namaProductController.text,
-      'harga_beli': cleanCurrencyFormat(hrgBeliProductController.text),
-      'harga_jual': cleanCurrencyFormat(hrgJualProductController.text),
-      'stok': stokProductController.text,
-      'diskon': diskonProductController.text
-    };
-
-    storeProduct(imageFile.value, data);
   }
 
   Future<void> storeProduct(String imagePath, Map<String, String> data) async {
@@ -192,9 +222,28 @@ class ProductController extends GetxController {
     if (responseApi.responsestate == Constants.SUCCESS_STATE) {
       Get.snackbar('Sukses', 'Berhasil menambahkan produk baru');
       productModelList.clear();
-      productModelList2.clear();
+
       resetStateStore();
-      await getProduct();
+      await getProductData();
+
+      return;
+    } else {
+      Get.snackbar('Gagal', responseApi.message.toString());
+      return;
+    }
+  }
+
+  Future<void> updateProduct(String imagePath, Map<String, String> data) async {
+    isLoadingStore.value = true;
+    final responseApi = await apiService.updateProduct(imagePath, data);
+    isLoadingStore.value = false;
+
+    if (responseApi.responsestate == Constants.SUCCESS_STATE) {
+      Get.snackbar('Sukses', 'Berhasil mengubah data');
+      productModelList.clear();
+
+      resetStateStore();
+      await getProductData();
 
       return;
     } else {
@@ -212,6 +261,9 @@ class ProductController extends GetxController {
     diskonProductController.text = '';
     stokProductController.text = '';
     imageFile.value = '';
+    productModel = ProductModel();
+    isEditable.value = false;
+    productId = 0;
   }
 
   String cleanCurrencyFormat(String currency) {
@@ -229,11 +281,27 @@ class ProductController extends GetxController {
       Get.snackbar('Berhasil', 'Produk berhasil di hapus');
 
       productModelList.clear();
-      productModelList2.clear();
-      await getProduct();
+
+      await getProductData();
     } else {
       Get.snackbar('Error', responseApi.message.toString());
       return;
     }
+  }
+
+  void setProductEdit() {
+    if (productModel != '') {
+      isEditable.value = true;
+      namaProductController.text = productModel.nama_produk.toString();
+      merkProductController.text = productModel.merk.toString();
+      hrgBeliProductController.text = productModel.harga_beli.toString();
+      hrgJualProductController.text = productModel.harga_jual.toString();
+      diskonProductController.text = productModel.diskon.toString();
+      stokProductController.text = productModel.stok.toString();
+      productId = productModel.id_produk;
+      return;
+    }
+
+    return;
   }
 }
