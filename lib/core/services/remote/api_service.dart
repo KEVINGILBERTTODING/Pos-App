@@ -9,6 +9,7 @@ import 'package:pos_app/core/models/dashboard/dashboard_model.dart';
 import 'package:pos_app/core/models/member/member_model.dart';
 import 'package:pos_app/core/models/penjualan/penjualan_model.dart';
 import 'package:pos_app/core/models/product/product_model.dart';
+import 'package:pos_app/core/models/report/report_model.dart';
 import 'package:pos_app/core/models/user/client_model.dart';
 import 'package:pos_app/core/services/remote/end_point.dart';
 import 'package:pos_app/core/util/constans.dart';
@@ -494,6 +495,36 @@ class ApiService extends GetxService {
       }
     } catch (e) {
       print('error get dashboard: ${e.toString()}');
+      return ResponseApiModel(
+          message: 'Server error',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
+
+  Future<ResponseApiModel> getReport(String tglAwal, String tglAkhir) async {
+    try {
+      final responseApiModel = await http
+          .get(Uri.parse(EndPoint.report_endpoint + tglAwal + '/' + tglAkhir));
+      print('url ${EndPoint.report_endpoint + tglAwal + '/' + tglAkhir}');
+
+      if (responseApiModel.statusCode == 200 && responseApiModel.body != null) {
+        final dataResponse = jsonDecode(responseApiModel.body);
+        return ResponseApiModel(
+            message: 'Berhasil memuat data report',
+            responsestate: Constants.SUCCESS_STATE,
+            data: (dataResponse['data'] as List)
+                .map((item) => ReportModel.fromJson(item))
+                .toList());
+      } else {
+        print(responseApiModel.body);
+        return ResponseApiModel(
+            message: 'Gagal memuat data report',
+            responsestate: Constants.ERROR_STATE,
+            data: null);
+      }
+    } catch (e) {
+      print('error get report: ${e.toString()}');
       return ResponseApiModel(
           message: 'Server error',
           responsestate: Constants.SERVER_ERR_STATE,

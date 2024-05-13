@@ -36,7 +36,7 @@ class DashboardAdminScreen extends StatelessWidget {
                       // Called when one tab is selected
                       onDestinationSelected: (int index) {
                         controller.stateSelectedIndex.value = index;
-                        if (index == 6) {
+                        if (index == 7) {
                           Get.dialog(
                             barrierColor: Colors.white,
                             AlertDialog(
@@ -119,6 +119,9 @@ class DashboardAdminScreen extends StatelessWidget {
                         NavigationRailDestination(
                             icon: Icon(CupertinoIcons.cube_box),
                             label: Text('Produk')),
+                        NavigationRailDestination(
+                            icon: Icon(CupertinoIcons.chart_bar_square),
+                            label: Text('Laporan')),
                         NavigationRailDestination(
                             indicatorColor: StylesApp.primaryColor,
                             icon: Icon(CupertinoIcons.person_alt_circle),

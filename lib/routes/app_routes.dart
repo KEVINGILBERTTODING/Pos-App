@@ -10,7 +10,8 @@ abstract class Routes {
   static const DASHBOARD_ADMIN = _Paths.DASBOARD_ADMIN;
   static const HOME_ADMIN = _Paths.HOME_ADMIN;
   static const CATEGORY = _Paths.CATEGORY;
-  static const MEMBER = _Paths.CATEGORY;
+  static const MEMBER = _Paths.MEMBER;
+  static const REPORT = _Paths.REPORT;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const HOME_ADMIN = '/home_admin';
   static const CATEGORY = '/category';
   static const MEMBER = '/member';
+  static const REPORT = '/report';
 }

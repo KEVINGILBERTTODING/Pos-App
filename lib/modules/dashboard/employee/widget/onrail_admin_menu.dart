@@ -5,6 +5,7 @@ import 'package:pos_app/modules/home/employee/views/home_screen.dart';
 import 'package:pos_app/modules/member/views/member_view.dart';
 import 'package:pos_app/modules/product/views/product_view.dart';
 import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
+import 'package:pos_app/modules/report/views/report_view.dart';
 
 abstract class AdminOnRailMenu {
   static const List<Widget> menuContent = [
@@ -14,6 +15,7 @@ abstract class AdminOnRailMenu {
     CategoryView(),
     MemberScreen(),
     ProductScreen(),
+    ReportScreen(),
     EmployeeProfileScreen(),
     EmployeeProfileScreen(),
   ];

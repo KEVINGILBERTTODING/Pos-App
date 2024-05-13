@@ -17,6 +17,8 @@ import 'package:pos_app/modules/member/bindings/member_binding.dart';
 import 'package:pos_app/modules/member/views/member_view.dart';
 import 'package:pos_app/modules/profile/employee/bindings/employee_profile_binding.dart';
 import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
+import 'package:pos_app/modules/report/bindings/report_binding.dart';
+import 'package:pos_app/modules/report/views/report_view.dart';
 
 part 'app_routes.dart';
 
@@ -69,6 +71,11 @@ class AppPages {
       name: _Paths.MEMBER,
       page: () => MemberScreen(),
       binding: MemberBinding(),
+    ),
+    GetPage(
+      name: _Paths.REPORT,
+      page: () => ReportScreen(),
+      binding: ReportBinding(),
     ),
   ];
 }
