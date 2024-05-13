@@ -11,6 +11,7 @@ class ReportController extends GetxController {
   RxBool isLoadingDatePicker = false.obs;
   TextEditingController controllerDate = TextEditingController();
 
+  @override
   Future<void> getReport(String tglAwal, String tglAkhir) async {
     reportModelList.clear();
     print('report date: ${tglAwal} s/d ${tglAkhir}');

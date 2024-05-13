@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -50,7 +51,7 @@ class LoginScreen extends GetView<AuthController> {
                         keyboardType: TextInputType.emailAddress,
                         style: TextStyle(fontFamily: 'popmed', fontSize: 7.sp),
                         decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.email_outlined),
+                          prefixIcon: const Icon(CupertinoIcons.mail),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -63,8 +64,8 @@ class LoginScreen extends GetView<AuthController> {
                           ),
                           hintText: "Masukkan email anda",
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: StylesApp.primaryColor, width: 2.0),
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -84,11 +85,11 @@ class LoginScreen extends GetView<AuthController> {
                             fontSize: 6.sp,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: StylesApp.primaryColor, width: 2.0),
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          prefixIcon: const Icon(Icons.key_sharp),
+                          prefixIcon: const Icon(CupertinoIcons.lock),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -102,7 +103,7 @@ class LoginScreen extends GetView<AuthController> {
                                 semanticLabel: "Show password"),
                             color: (isObsecuredPass.value)
                                 ? Colors.black
-                                : StylesApp.primaryColor,
+                                : Colors.blue,
                             onPressed: () => isObsecuredPass.value =
                                 !(isObsecuredPass.value),
                           ),
@@ -120,7 +121,10 @@ class LoginScreen extends GetView<AuthController> {
                                   controller.validateLogin();
                                 },
                                 child: controller.isLoading.value
-                                    ? CircularProgressIndicator()
+                                    ? CircularProgressIndicator(
+                                        backgroundColor: Colors.blue[50],
+                                        color: Colors.blue,
+                                      )
                                     : Container(
                                         width: 70.w,
                                         padding: const EdgeInsets.symmetric(

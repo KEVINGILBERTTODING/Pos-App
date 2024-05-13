@@ -96,6 +96,7 @@ class DashboardAdminScreen extends StatelessWidget {
                       // navigation rail items
                       destinations: const [
                         NavigationRailDestination(
+                            indicatorColor: Colors.blue,
                             icon: Icon(
                               CupertinoIcons.app_badge,
                               weight: 2.0,

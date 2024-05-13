@@ -73,7 +73,10 @@ class CategoryView extends StatelessWidget {
                                 controller.categoryModelList.value[index];
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
-                              leading: Icon(CupertinoIcons.square_favorites),
+                              leading: Icon(
+                                CupertinoIcons.square_favorites,
+                                color: Colors.green,
+                              ),
                               title: Text(
                                 categoryList.nama_kategori.toString(),
                                 style: TextStyle(

@@ -106,7 +106,7 @@ class ProductScreen extends StatelessWidget {
                                 print(controller.productModel.toString());
                               },
                               child: ListTile(
-                                contentPadding: EdgeInsets.zero,
+                                contentPadding: EdgeInsets.only(top: 10.h),
                                 leading: Image.network(
                                   '${EndPoint.base_url_product_image + productList.img!}',
                                   errorBuilder: (context, error, stackTrace) {
@@ -125,7 +125,7 @@ class ProductScreen extends StatelessWidget {
                                   'X${productList.stok.toString()}',
                                   style: TextStyle(
                                       fontFamily: 'popreg',
-                                      color: Colors.blue,
+                                      color: Colors.grey,
                                       fontSize: 6.sp),
                                 ),
                                 trailing: GestureDetector(
@@ -532,9 +532,12 @@ class ProductScreen extends StatelessWidget {
                                                 ),
                                               ),
                                             ],
-                                          )
+                                          ),
                                   ],
-                                )
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
                               ],
                             ),
                           ),

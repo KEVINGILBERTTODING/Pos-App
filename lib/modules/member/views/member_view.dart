@@ -78,8 +78,8 @@ class MemberScreen extends StatelessWidget {
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
                               leading: Icon(
-                                CupertinoIcons.person_2_square_stack,
-                                color: Colors.black,
+                                CupertinoIcons.person,
+                                color: Colors.blue,
                               ),
                               title: Text(
                                 memberList.nama.toString(),

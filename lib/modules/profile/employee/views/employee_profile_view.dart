@@ -155,7 +155,8 @@ class EmployeeProfileScreen extends StatelessWidget {
                               alignment: Alignment.topRight,
                               child: controller.isLoadingUpdateData.value
                                   ? CircularProgressIndicator(
-                                      backgroundColor: Colors.blue,
+                                      color: Colors.blue,
+                                      backgroundColor: Colors.blue[50],
                                     )
                                   : TextButton(
                                       onPressed: () async {
@@ -174,6 +175,9 @@ class EmployeeProfileScreen extends StatelessWidget {
                                                 Colors.blue[50]),
                                       ),
                                     ),
+                            ),
+                            SizedBox(
+                              height: 20.h,
                             ),
                           ],
                         ),

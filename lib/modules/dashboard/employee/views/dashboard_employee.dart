@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -96,14 +98,18 @@ class DashboardEmployeeScreen extends StatelessWidget {
                 // navigation rail items
                 destinations: const [
                   NavigationRailDestination(
-                      icon: Icon(Icons.apps), label: Text('Home')),
+                      icon: Icon(
+                        CupertinoIcons.app_badge,
+                        weight: 2.0,
+                      ),
+                      label: Text('Home')),
                   NavigationRailDestination(
                       indicatorColor: StylesApp.primaryColor,
-                      icon: Icon(Icons.person_outline),
+                      icon: Icon(CupertinoIcons.person_alt_circle),
                       label: Text('Profil')),
                   NavigationRailDestination(
                       indicatorColor: StylesApp.primaryColor,
-                      icon: Icon(Icons.logout_outlined),
+                      icon: Icon(CupertinoIcons.arrow_right_circle),
                       label: Text('Keluar')),
                 ],
               ),
@@ -112,7 +118,7 @@ class DashboardEmployeeScreen extends StatelessWidget {
             // This part is always shown
             // You will see it on both small and wide screen
             Expanded(
-                child: AdminOnRailMenu
+                child: EmployeeOnRailMenu
                     .menuContent[controller.stateSelectedIndex.value]),
           ],
         ),

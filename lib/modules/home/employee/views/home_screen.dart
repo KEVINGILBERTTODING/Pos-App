@@ -176,9 +176,9 @@ class HomeScreen extends StatelessWidget {
                       child: controller.penjualanDetailModelList.isEmpty
                           ? Center(
                               child: Text(
-                                'Tidak ada pesanan',
+                                'belum ada pesanan.',
                                 style: TextStyle(
-                                    fontFamily: 'popmed',
+                                    fontFamily: 'popreg',
                                     fontSize: 6.sp,
                                     color: Colors.grey),
                               ),
@@ -195,13 +195,14 @@ class HomeScreen extends StatelessWidget {
                                 // controller.foodList.isEmpty ?
 
                                 return ListTile(
-                                  contentPadding: EdgeInsets.zero,
+                                  contentPadding: EdgeInsets.only(top: 10.h),
                                   title: Text(
                                     orderList.productName.toString(),
                                     style: TextStyle(
-                                        fontFamily: 'popmed',
-                                        fontSize: 6.sp,
-                                        color: Colors.black),
+                                      fontFamily: 'popmed',
+                                      fontSize: 6.sp,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                   subtitle: SizedBox(
                                     width: double.infinity,
