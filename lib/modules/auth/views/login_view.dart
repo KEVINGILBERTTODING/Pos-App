@@ -4,8 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pos_app/modules/auth/controllers/auth_controller.dart';
-import 'package:pos_app/routes/app_pages.dart';
-import 'package:pos_app/styles/styles.dart';
 
 class LoginScreen extends GetView<AuthController> {
   const LoginScreen({super.key});
