@@ -12,6 +12,7 @@ abstract class Routes {
   static const CATEGORY = _Paths.CATEGORY;
   static const MEMBER = _Paths.MEMBER;
   static const REPORT = _Paths.REPORT;
+  static const SETTING = _Paths.SETTING;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const CATEGORY = '/category';
   static const MEMBER = '/member';
   static const REPORT = '/report';
+  static const SETTING = '/setting';
 }

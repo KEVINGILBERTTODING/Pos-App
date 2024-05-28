@@ -96,41 +96,54 @@ class DashboardAdminScreen extends StatelessWidget {
                       // navigation rail items
                       destinations: const [
                         NavigationRailDestination(
-                            indicatorColor: Colors.blue,
-                            icon: Icon(
-                              CupertinoIcons.app_badge,
-                              weight: 2.0,
-                            ),
-                            label: Text('Home')),
+                          indicatorColor: Colors.blue,
+                          icon: Icon(
+                            CupertinoIcons.app_badge,
+                            weight: 2.0,
+                          ),
+                          label: Text('Home'),
+                        ),
                         NavigationRailDestination(
-                            icon: Icon(
-                              CupertinoIcons.shopping_cart,
-                              weight: 2.0,
-                            ),
-                            label: Text('Penjualan')),
+                          icon: Icon(
+                            CupertinoIcons.shopping_cart,
+                            weight: 2.0,
+                          ),
+                          label: Text('Penjualan'),
+                        ),
                         NavigationRailDestination(
-                            icon: Icon(CupertinoIcons.square_favorites),
-                            label: Text('Kategori')),
+                          icon: Icon(CupertinoIcons.square_favorites),
+                          label: Text('Kategori'),
+                        ),
                         NavigationRailDestination(
-                            icon: Icon(
-                              CupertinoIcons.person_2,
-                              weight: 2.0,
-                            ),
-                            label: Text('Member')),
+                          icon: Icon(
+                            CupertinoIcons.person_2,
+                            weight: 2.0,
+                          ),
+                          label: Text('Member'),
+                        ),
                         NavigationRailDestination(
-                            icon: Icon(CupertinoIcons.cube_box),
-                            label: Text('Produk')),
+                          icon: Icon(CupertinoIcons.cube_box),
+                          label: Text('Produk'),
+                        ),
                         NavigationRailDestination(
-                            icon: Icon(CupertinoIcons.chart_bar_square),
-                            label: Text('Laporan')),
+                          icon: Icon(CupertinoIcons.chart_bar_square),
+                          label: Text('Laporan'),
+                        ),
                         NavigationRailDestination(
-                            indicatorColor: StylesApp.primaryColor,
-                            icon: Icon(CupertinoIcons.person_alt_circle),
-                            label: Text('Profil')),
+                          indicatorColor: StylesApp.primaryColor,
+                          icon: Icon(CupertinoIcons.settings),
+                          label: Text('Pengaturan'),
+                        ),
                         NavigationRailDestination(
-                            indicatorColor: StylesApp.primaryColor,
-                            icon: Icon(CupertinoIcons.arrow_right_circle),
-                            label: Text('Keluar')),
+                          indicatorColor: StylesApp.primaryColor,
+                          icon: Icon(CupertinoIcons.person_alt_circle),
+                          label: Text('Profil'),
+                        ),
+                        NavigationRailDestination(
+                          indicatorColor: StylesApp.primaryColor,
+                          icon: Icon(CupertinoIcons.arrow_right_circle),
+                          label: Text('Keluar'),
+                        ),
                       ],
                     ),
                   ),

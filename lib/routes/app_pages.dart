@@ -19,6 +19,8 @@ import 'package:pos_app/modules/profile/employee/bindings/employee_profile_bindi
 import 'package:pos_app/modules/profile/employee/views/employee_profile_view.dart';
 import 'package:pos_app/modules/report/bindings/report_binding.dart';
 import 'package:pos_app/modules/report/views/report_view.dart';
+import 'package:pos_app/modules/setting/bindings/setting_binding.dart';
+import 'package:pos_app/modules/setting/views/setting_view.dart';
 
 part 'app_routes.dart';
 
@@ -77,5 +79,10 @@ class AppPages {
       page: () => ReportScreen(),
       binding: ReportBinding(),
     ),
+    GetPage(
+      name: _Paths.SETTING,
+      binding: SettingBinding(),
+      page: () => SettingScreen(),
+    )
   ];
 }
