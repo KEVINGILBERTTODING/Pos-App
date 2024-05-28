@@ -26,6 +26,7 @@ class ModalNota extends StatelessWidget {
       )
       ..loadRequest(Uri.parse(notaUrl));
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Container(
