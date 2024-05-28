@@ -531,4 +531,30 @@ class ApiService extends GetxService {
           data: null);
     }
   }
+
+  Future<ResponseApiModel> updateSetting(Map<String, dynamic> data) async {
+    try {
+      final url = Uri.parse(EndPoint.setting_update_endpoint);
+      final responseApi = await http.post(url, body: data);
+      print(responseApi.body);
+      if (responseApi.statusCode == 200) {
+        return ResponseApiModel(
+            message: 'Berhasil menyimpan data',
+            responsestate: Constants.SUCCESS_STATE,
+            data: null);
+      }
+
+      return ResponseApiModel(
+          message: 'Gagal menyimpan data',
+          responsestate: Constants.ERROR_STATE,
+          data: null);
+    } catch (e) {
+      print(e.toString());
+
+      return ResponseApiModel(
+          message: 'Terjadi kesalahan server',
+          responsestate: Constants.SERVER_ERR_STATE,
+          data: null);
+    }
+  }
 }

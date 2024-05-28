@@ -172,21 +172,28 @@ class SettingScreen extends GetView<SettingController> {
                           children: [
                             Align(
                               alignment: Alignment.topRight,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Simpan Data',
-                                  style: TextStyle(
-                                      fontFamily: 'popmed',
+                              child: controller.isLoadingStore.value
+                                  ? CircularProgressIndicator(
+                                      backgroundColor: Colors.blue[50],
                                       color: Colors.blue,
-                                      fontSize: 6.sp),
-                                ),
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStatePropertyAll(
-                                    Colors.blue[50],
-                                  ),
-                                ),
-                              ),
+                                    )
+                                  : TextButton(
+                                      onPressed: () async {
+                                        controller.formValidate();
+                                      },
+                                      child: Text(
+                                        'Simpan Data',
+                                        style: TextStyle(
+                                            fontFamily: 'popmed',
+                                            color: Colors.blue,
+                                            fontSize: 6.sp),
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          Colors.blue[50],
+                                        ),
+                                      ),
+                                    ),
                             )
                           ],
                         )

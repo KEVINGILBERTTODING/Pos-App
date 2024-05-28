@@ -26,4 +26,5 @@ class EndPoint {
   static final dashboard_endpoint = api_service + 'dashboard/';
   static final nota_transaction_endpoint = base_url + 'nota/';
   static final report_endpoint = api_service + 'reporttransaction/';
+  static final setting_update_endpoint = api_service + 'setting/update/';
 }
