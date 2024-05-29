@@ -1,7 +1,7 @@
 class EndPoint {
   // static final ip_address = '192.168.43.215'; // hotspot
-  // static final ip_address = '192.168.18.113'; // kantor
-  static final ip_address = '192.168.43.215'; // wifi kos
+  static final ip_address = '192.168.18.113'; // kantor
+  // static final ip_address = '192.168.43.215'; // wifi kos
 
   static final api_service = 'http://$ip_address:8000/api/';
   static final base_url = 'http://$ip_address:8000/';

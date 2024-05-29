@@ -36,7 +36,7 @@ class DashboardAdminScreen extends StatelessWidget {
                       // Called when one tab is selected
                       onDestinationSelected: (int index) {
                         controller.stateSelectedIndex.value = index;
-                        if (index == 7) {
+                        if (index == 8) {
                           Get.dialog(
                             barrierColor: Colors.white,
                             AlertDialog(
